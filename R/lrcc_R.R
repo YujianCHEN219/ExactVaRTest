@@ -77,6 +77,9 @@ fb_lrcc_R <- function(n,
     T10 * safe_log(1 - pi11) + T11 * safe_log(pi11)
   
   LR <- LRuc - 2 * (num - den)
+  keep <- is.finite(LR)
+  LR   <- LR [keep]
+  S    <- S  [keep, , drop = FALSE]
   
   out <- cbind(LR, S[, 7])
   out <- out[order(out[, 1]), , drop = FALSE]
@@ -90,7 +93,11 @@ fb_lrcc_R <- function(n,
     start <- e + 1L
   }
   
-  res[, 2] <- res[, 2] / sum(res[, 2])
+  s <- sum(res[, 2])
+  if (s == 0)
+    return(list(LR = numeric(0), prob = numeric(0)))
+  
+  res[, 2] <- res[, 2] / s
   list(LR = res[, 1], prob = res[, 2])
 }
 

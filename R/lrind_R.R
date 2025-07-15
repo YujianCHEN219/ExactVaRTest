@@ -66,7 +66,7 @@ fb_lrind_R <- function(n,
   out <- cbind(LR, S[, 6])
   out <- out[order(out[, 1]), , drop = FALSE]
   
-  idx <- c(which(diff(out[, 1]) != 0), nrow(out))
+  idx   <- c(which(diff(out[, 1]) != 0), nrow(out))
   final <- out[idx, , drop = FALSE]
   start <- 1L
   for (i in seq_along(idx)) {
@@ -75,7 +75,11 @@ fb_lrind_R <- function(n,
     start <- e + 1L
   }
   
-  final[, 2] <- final[, 2] / sum(final[, 2])
+  s <- sum(final[, 2])
+  if (s == 0)
+    return(list(LR = numeric(0), prob = numeric(0)))
+  
+  final[, 2] <- final[, 2] / s
   list(LR = final[, 1], prob = final[, 2])
 }
 

@@ -6,3 +6,4 @@
 ^\\.o$$
 ^^\\.DS_Store$$
 ^README\.Rmd$
+^\.github$
