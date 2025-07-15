@@ -73,9 +73,9 @@ fb_lrcc_R <- function(n,
   num  <- T0 * safe_log(1 - pHat) + T1 * safe_log(pHat)
   
   pi01 <- ifelse((T00 + T01) > 0,
-                 T01 / (T00 + T01), 0)
+                 T01 / (T00 + T01), 1)
   pi11 <- ifelse((T10 + T11) > 0,
-                 T11 / (T10 + T11), 0)
+                 T11 / (T10 + T11), 1)
   den  <- T00 * safe_log(1 - pi01) + T01 * safe_log(pi01) +
     T10 * safe_log(1 - pi11) + T11 * safe_log(pi11)
   
