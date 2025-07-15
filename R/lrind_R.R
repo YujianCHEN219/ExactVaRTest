@@ -62,7 +62,14 @@ fb_lrind_R <- function(n,
   den  <- S[, 2] * safe_log(1 - pi01) + S[, 4] * safe_log(pi01) +
     S[, 3] * safe_log(1 - pi11) + S[, 5] * safe_log(pi11)
   
-  LR  <- -2 * (num - den)
+  LR <- -2 * (num - den)
+  
+  keep <- is.finite(LR)
+  LR   <- LR[keep]
+  S    <- S[keep, , drop = FALSE]
+  if (!length(LR))
+    return(list(LR = numeric(0), prob = numeric(0)))
+  
   out <- cbind(LR, S[, 6])
   out <- out[order(out[, 1]), , drop = FALSE]
   
