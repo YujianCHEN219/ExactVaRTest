@@ -14,12 +14,12 @@ Coverage (CC) tests.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/YourGitHub/ExactVaRTest}
-  \item Report bugs at \url{https://github.com/YourGitHub/ExactVaRTest/issues}
+  \item \url{https://github.com/YujianCHEN219/ExactVaRTest}
+  \item Report bugs at \url{https://github.com/YujianCHEN219/ExactVaRTest/issues}
 }
 
 }
 \author{
-\strong{Maintainer}: Yujian Chen \email{yujian.chen@polytechnique.edu}
+\strong{Maintainer}: Yujian Chen \email{yjc4996@gmail.com}
 
 }

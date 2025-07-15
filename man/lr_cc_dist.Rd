@@ -7,20 +7,21 @@
 lr_cc_dist(n, alpha = 0.05, prune_threshold = 1e-15)
 }
 \arguments{
-\item{n}{Integer. Sample size (\eqn{n \ge 1}{n >= 1}).}
+\item{n}{Integer sample size (\eqn{n \ge 1}).}
 
-\item{alpha}{Numeric in (0,1). Exception probability.}
+\item{alpha}{Exception probability \eqn{\alpha \in (0,1)}.}
 
-\item{prune_threshold}{Numeric. States whose probability drops below
-this value are pruned in the dynamic-programming recursion.}
+\item{prune_threshold}{Probability below which states are pruned by the
+dynamic-programming recursion.}
 }
 \value{
-A data frame with two columns \code{LR} and \code{prob}.
+A data frame with columns \code{LR} and \code{prob}.
 }
 \description{
-Returns the exact finite-sample distribution of Christoffersen’s
+Returns the finite-sample distribution of Christoffersen’s
 conditional-coverage statistic \eqn{LR_{\mathrm{cc}}}.
-The fast Rcpp backend (\code{fb_lrcc_fastcpp}) is used when available; if
-compilation fails the function falls back to the pure-R algorithm
-(\code{fb_lrcc_R}).
+}
+\examples{
+## exact LR_cc distribution for n = 8, alpha = 0.05
+lr_cc_dist(8, 0.05)
 }

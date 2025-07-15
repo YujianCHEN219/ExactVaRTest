@@ -7,24 +7,25 @@
 lr_ind_dist(n, alpha = 0.05, prune_threshold = 1e-15)
 }
 \arguments{
-\item{n}{Integer. Sample size (\eqn{n \ge 1}{n >= 1}).}
+\item{n}{Integer sample size (\eqn{n \ge 1}).}
 
-\item{alpha}{Numeric in (0,1). Exception probability.}
+\item{alpha}{Exception probability \eqn{\alpha \in (0,1)}.}
 
-\item{prune_threshold}{Numeric. States whose probability drops below
-this value are pruned in the dynamic-programming recursion.}
+\item{prune_threshold}{Probability below which states are pruned by the
+dynamic-programming recursion.}
 }
 \value{
 A data frame with two columns
 \describe{
 \item{LR}{unique LR values (ascending)}
-\item{prob}{their exact probabilities (sum to 1)}
+\item{prob}{exact probabilities (sum to 1)}
 }
 }
 \description{
-Returns the exact finite-sample distribution of Christoffersen’s
-independence statistic \eqn{LR_{\mathrm{ind}}}.
-The function first tries the Rcpp implementation
-(\code{fb_lrind_fastcpp}) and silently falls back to the pure-R reference
-version (\code{fb_lrind_R}) if the shared library is not available.
+Returns the finite-sample distribution of Christoffersen’s independence
+statistic \eqn{LR_{\mathrm{ind}}}.
+}
+\examples{
+## exact LR_ind distribution for n = 8, alpha = 0.05
+lr_ind_dist(8, 0.05)
 }
