@@ -1,0 +1,22 @@
+Package: ExactVaRTest
+Title: Exact Finite-Sample VaR Back-Testing
+Version: 0.0.0.9000
+Authors@R: 
+    person("Yujian", "Chen", , "yujian.chen@polytechnique.edu", role = c("aut", "cre"))
+Description: Provides fast dynamic-programming algorithms to compute the
+    exact finite-sample distribution and p-values of the Christoffersen
+    (1998) Unconditional Coverage (UC), Independence (IND) and Conditional
+    Coverage (CC) tests for Value-at-Risk models.
+License: MIT + file LICENSE
+URL: https://github.com/YourGitHub/ExactVaRTest
+BugReports: https://github.com/YourGitHub/ExactVaRTest/issues
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
+LinkingTo: 
+    Rcpp
+Imports: 
+    Rcpp
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
