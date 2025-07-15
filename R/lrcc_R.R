@@ -5,6 +5,9 @@ fb_lrcc_R <- function(n,
                       alpha           = 0.05,
                       prune_threshold = 1e-15) {
   
+  if (n < 2)
+    return(list(LR = 0, prob = 1))
+  
   LRuc_count <- function(c1, n, p) {
     p_   <- max(min(p, 1 - EPS), EPS)
     phat <- if (c1 == 0) 0 else if (c1 == n) 1 else c1 / n
@@ -70,16 +73,16 @@ fb_lrcc_R <- function(n,
   num  <- T0 * safe_log(1 - pHat) + T1 * safe_log(pHat)
   
   pi01 <- ifelse((T00 + T01) > 0,
-                 T01 / (T00 + T01), 1)
+                 T01 / (T00 + T01), 0)
   pi11 <- ifelse((T10 + T11) > 0,
-                 T11 / (T10 + T11), 1)
+                 T11 / (T10 + T11), 0)
   den  <- T00 * safe_log(1 - pi01) + T01 * safe_log(pi01) +
     T10 * safe_log(1 - pi11) + T11 * safe_log(pi11)
   
   LR <- LRuc - 2 * (num - den)
   keep <- is.finite(LR)
-  LR   <- LR [keep]
-  S    <- S  [keep, , drop = FALSE]
+  LR   <- LR[keep]
+  S    <- S[keep, , drop = FALSE]
   
   out <- cbind(LR, S[, 7])
   out <- out[order(out[, 1]), , drop = FALSE]
@@ -100,4 +103,3 @@ fb_lrcc_R <- function(n,
   res[, 2] <- res[, 2] / s
   list(LR = res[, 1], prob = res[, 2])
 }
-

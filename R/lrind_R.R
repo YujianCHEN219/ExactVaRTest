@@ -5,6 +5,9 @@ fb_lrind_R <- function(n,
                        alpha           = 0.05,
                        prune_threshold = 1e-15) {
   
+  if (n < 2)
+    return(list(LR = 0, prob = 1))
+  
   combine_states <- function(mat) {
     if (!nrow(mat)) return(mat)
     o   <- do.call(order, lapply(seq_len(5), function(i) mat[, i]))
@@ -56,9 +59,9 @@ fb_lrind_R <- function(n,
   num <- T0 * safe_log(1 - pH) + T1 * safe_log(pH)
   
   pi01 <- ifelse((S[, 2] + S[, 4]) > 0,
-                 S[, 4] / (S[, 2] + S[, 4]), 1)
+                 S[, 4] / (S[, 2] + S[, 4]), 0)
   pi11 <- ifelse((S[, 3] + S[, 5]) > 0,
-                 S[, 5] / (S[, 3] + S[, 5]), 1)
+                 S[, 5] / (S[, 3] + S[, 5]), 0)
   den  <- S[, 2] * safe_log(1 - pi01) + S[, 4] * safe_log(pi01) +
     S[, 3] * safe_log(1 - pi11) + S[, 5] * safe_log(pi11)
   
@@ -89,5 +92,3 @@ fb_lrind_R <- function(n,
   final[, 2] <- final[, 2] / s
   list(LR = final[, 1], prob = final[, 2])
 }
-
-
