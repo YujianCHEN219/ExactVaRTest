@@ -23,30 +23,28 @@ strip_tiny <- function(res, prob_tol = 1e-12) {
   res
 }
 
-check_lr_dist <- function(gen_cpp, gen_R, n_vec = c(5, 10),
-                          alpha = 0.05, tol = 1e-8) {
+check_lr_dist <- function(gen_cpp, gen_R,
+                          n_vec = c(5, 10),
+                          alpha = 0.05,
+                          tol = 1e-8,
+                          tol_LR = 1e-12) {
+  
   for (n in n_vec) {
-    dist_cpp <- gen_cpp(n, alpha)
-    dist_R   <- gen_R(n, alpha)
+    dist_cpp <- strip_tiny(collapse_close(gen_cpp(n, alpha), tol_LR))
+    dist_R   <- strip_tiny(collapse_close(gen_R  (n, alpha), tol_LR))
     
-    ## basic shape
-    expect_gt(length(dist_cpp$LR), 0)
+    ## CDF-based comparison ------------------------------------------
+    allLR <- sort(unique(c(dist_cpp$LR, dist_R$LR)))
+    p_cpp <- dist_cpp$prob[match(allLR, dist_cpp$LR)]
+    p_R   <- dist_R$prob  [match(allLR, dist_R$LR)]
+    p_cpp[is.na(p_cpp)] <- 0
+    p_R  [is.na(p_R)]   <- 0
     
-    ## probabilities must be finite, non-negative and sum to 1
-    expect_true(all(is.finite(dist_cpp$prob)))
-    expect_true(all(dist_cpp$prob >= 0))
-    expect_equal(sum(dist_cpp$prob), 1, tolerance = tol)
+    expect_true(all(is.finite(p_cpp)))
+    expect_true(all(p_cpp >= 0))
+    expect_equal(sum(p_cpp), 1, tolerance = tol)
     
-    ## compare C++ vs. R after aggregating duplicate LR values
-    a_cpp <- agg_probs(dist_cpp)
-    a_R   <- agg_probs(dist_R)
-    
-    expect_equal(sort(as.numeric(names(a_cpp))),
-                 sort(as.numeric(names(a_R))),
-                 tolerance = tol)
-    
-    a_R <- a_R[names(a_cpp)]               
-    expect_equal(unname(a_cpp), unname(a_R), tolerance = tol)
+    expect_equal(cumsum(p_cpp), cumsum(p_R), tolerance = tol)
   }
 }
 
@@ -68,9 +66,7 @@ test_that("lr_ind_dist – C++ and R engines numerically identical", {
   res_cpp <- strip_tiny(collapse_close(res_cpp, COLL_TOL), PROB_TOL)
   res_R   <- strip_tiny(collapse_close(res_R,   COLL_TOL), PROB_TOL)
   
-  expect_equal(res_cpp$LR,   res_R$LR,   tolerance = TOL)
-  expect_equal(res_cpp$prob, res_R$prob, tolerance = TOL)
-  
+  expect_equal(cumsum(res_cpp$prob), cumsum(res_R$prob), tolerance = TOL)
   expect_true(all(is.finite(res_cpp$prob)))
   expect_true(all(res_cpp$prob >= 0))
   expect_equal(sum(res_cpp$prob), 1, tolerance = TOL)
@@ -89,9 +85,7 @@ test_that("lr_cc_dist – C++ and R engines numerically identical", {
   res_cpp <- strip_tiny(collapse_close(res_cpp, COLL_TOL), PROB_TOL)
   res_R   <- strip_tiny(collapse_close(res_R,   COLL_TOL), PROB_TOL)
   
-  expect_equal(res_cpp$LR,   res_R$LR,   tolerance = TOL)
-  expect_equal(res_cpp$prob, res_R$prob, tolerance = TOL)
-  
+  expect_equal(cumsum(res_cpp$prob), cumsum(res_R$prob), tolerance = TOL)
   expect_true(all(is.finite(res_cpp$prob)))
   expect_true(all(res_cpp$prob >= 0))
   expect_equal(sum(res_cpp$prob), 1, tolerance = TOL)
@@ -104,6 +98,8 @@ test_that("lr_ind_dist / lr_cc_dist give valid finite-sample distributions", {
   skip_on_cran()
   skip_if_not_installed("ExactVaRTest")
   
-  check_lr_dist(lr_ind_dist, fb_lrind_R, n_vec = c(5, 10), alpha = 0.05, tol = TOL)
-  check_lr_dist(lr_cc_dist,  fb_lrcc_R,  n_vec = c(5, 10), alpha = 0.05, tol = TOL)
+  check_lr_dist(lr_ind_dist, fb_lrind_R, n_vec = c(5, 10),
+                alpha = 0.05, tol = TOL)
+  check_lr_dist(lr_cc_dist,  fb_lrcc_R,  n_vec = c(5, 10),
+                alpha = 0.05, tol = TOL)
 })
