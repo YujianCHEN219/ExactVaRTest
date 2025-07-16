@@ -7,3 +7,5 @@
 ^^\\.DS_Store$$
 ^README\.Rmd$
 ^\.github$
+^doc$
+^Meta$

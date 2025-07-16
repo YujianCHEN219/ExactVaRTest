@@ -4,3 +4,12 @@
 .httr-oauth
 .DS_Store
 .quarto
+inst/doc
+/doc/
+/Meta/
+
+# R build artefacts
+*.tar.gz
+.Rcheck/
+doc/
+
