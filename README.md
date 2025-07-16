@@ -13,7 +13,9 @@ ExactVaRTest implements dynamic programming algorithms (C++ backend with
 a pure-R fallback) that give the exact finite-sample distributions and
 p-values of Christoffersen’s (1998) independence (IND) and
 conditional-coverage (CC) tests for Value-at-Risk (VaR) exception
-series.
+series. And in particular, it corrects the severe size distortions that
+the usual asymptotic $\chi^2$ approximation suffers from in small
+samples and under extreme coverage rates.
 
 A one-shot helper `backtest_lr()` returns the LR statistic, its exact
 p-value, and a reject / fail-to-reject decision for a chosen
@@ -52,16 +54,18 @@ print(bt)
 
 ## Main features
 
-Exact LR distributions and p-values for any sample size n (≈ 2 000 in
-seconds).
+Exact LR distributions and p-values for any sample size $n$; for
+$n \le 2\,000$ the computation finishes in milliseconds to a few
+seconds.
 
 C++ implementation (`Rcpp`) with automatic fallback to a pure-R
 reference version.
 
-High-level helper `backtest_lr()` with printing: statistic, p-value,
-decision, and all parameters in one object.
+`backtest_lr()` returns statistic, exact p-value, and reject /
+fail-to-reject decision in one single call.
 
-MIT-licensed, minimal dependencies (`Rcpp`, `stats`).
+Minimal dependencies (`Rcpp`, `stats`), MIT-licensed, works on macOS,
+Linux, and Windows.
 
 ## Acknowledgements
 
