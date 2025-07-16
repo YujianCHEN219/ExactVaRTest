@@ -5,14 +5,11 @@ agg_probs <- function(res) {
   tapply(res$prob, res$LR, sum, simplify = TRUE)
 }
 
-collapse_close <- function(res, tol = 1e-12) {
-  o  <- order(res$LR)
-  LR <- res$LR[o]; P <- res$prob[o]
-  keep <- c(TRUE, abs(diff(LR)) > tol)
-  grp  <- cumsum(keep)
-  LRc  <- tapply(LR, grp, `[`, 1L)
-  Pc   <- tapply(P,  grp, sum)
-  list(LR = as.numeric(LRc), prob = as.numeric(Pc) / sum(Pc))
+collapse_close <- function(res, digits = 10) {
+  res$LR <- round(res$LR, digits)
+  agg <- tapply(res$prob, res$LR, sum)
+  list(LR = as.numeric(names(agg)),
+       prob = as.numeric(agg) / sum(agg))
 }
 
 strip_tiny <- function(res, prob_tol = 1e-12) {
@@ -24,17 +21,16 @@ strip_tiny <- function(res, prob_tol = 1e-12) {
 }
 
 ## tolerance settings
-TOL        <- 1e-8    # numeric comparison
-COLL_TOL   <- 1e-12   # collapse nearly-equal LR
-PROB_TOL   <- 1e-12   # drop negligible probability
+TOL      <- 1e-8      # numeric comparison
+PROB_TOL <- 1e-12     # drop negligible probability
 
 check_lr_dist <- function(gen_cpp, gen_R,
                           n_vec  = c(5, 10),
                           alpha  = 0.05,
                           tol    = 1e-8) {
   for (n in n_vec) {
-    dist_cpp <- strip_tiny(collapse_close(gen_cpp(n, alpha), COLL_TOL), PROB_TOL)
-    dist_R   <- strip_tiny(collapse_close(gen_R  (n, alpha), COLL_TOL), PROB_TOL)
+    dist_cpp <- strip_tiny(collapse_close(gen_cpp(n, alpha)), PROB_TOL)
+    dist_R   <- strip_tiny(collapse_close(gen_R  (n, alpha)), PROB_TOL)
     
     allLR <- sort(unique(c(dist_cpp$LR, dist_R$LR)))
     p_cpp <- dist_cpp$prob[match(allLR, dist_cpp$LR)]
@@ -57,8 +53,8 @@ test_that("lr_ind_dist – C++ and R engines numerically identical", {
   n     <- 40
   alpha <- 0.05
   
-  res_cpp <- strip_tiny(collapse_close(lr_ind_dist(n, alpha), COLL_TOL), PROB_TOL)
-  res_R   <- strip_tiny(collapse_close(fb_lrind_R (n, alpha), COLL_TOL), PROB_TOL)
+  res_cpp <- strip_tiny(collapse_close(lr_ind_dist(n, alpha)), PROB_TOL)
+  res_R   <- strip_tiny(collapse_close(fb_lrind_R (n, alpha)), PROB_TOL)
   
   expect_equal(cumsum(res_cpp$prob), cumsum(res_R$prob), tolerance = TOL)
   expect_true(all(is.finite(res_cpp$prob)))
@@ -73,8 +69,8 @@ test_that("lr_cc_dist – C++ and R engines numerically identical", {
   n     <- 40
   alpha <- 0.05
   
-  res_cpp <- strip_tiny(collapse_close(lr_cc_dist(n, alpha), COLL_TOL), PROB_TOL)
-  res_R   <- strip_tiny(collapse_close(fb_lrcc_R (n, alpha), COLL_TOL), PROB_TOL)
+  res_cpp <- strip_tiny(collapse_close(lr_cc_dist(n, alpha)), PROB_TOL)
+  res_R   <- strip_tiny(collapse_close(fb_lrcc_R (n, alpha)), PROB_TOL)
   
   expect_equal(cumsum(res_cpp$prob), cumsum(res_R$prob), tolerance = TOL)
   expect_true(all(is.finite(res_cpp$prob)))
