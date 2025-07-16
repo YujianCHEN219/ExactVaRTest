@@ -23,17 +23,19 @@ strip_tiny <- function(res, prob_tol = 1e-12) {
   res
 }
 
+## tolerance settings
+TOL        <- 1e-8    # numeric comparison
+COLL_TOL   <- 1e-12   # collapse nearly-equal LR
+PROB_TOL   <- 1e-12   # drop negligible probability
+
 check_lr_dist <- function(gen_cpp, gen_R,
-                          n_vec = c(5, 10),
-                          alpha = 0.05,
-                          tol = 1e-8,
-                          tol_LR = 1e-12) {
-  
+                          n_vec  = c(5, 10),
+                          alpha  = 0.05,
+                          tol    = 1e-8) {
   for (n in n_vec) {
-    dist_cpp <- strip_tiny(collapse_close(gen_cpp(n, alpha), tol_LR))
-    dist_R   <- strip_tiny(collapse_close(gen_R  (n, alpha), tol_LR))
+    dist_cpp <- strip_tiny(collapse_close(gen_cpp(n, alpha), COLL_TOL), PROB_TOL)
+    dist_R   <- strip_tiny(collapse_close(gen_R  (n, alpha), COLL_TOL), PROB_TOL)
     
-    ## CDF-based comparison ------------------------------------------
     allLR <- sort(unique(c(dist_cpp$LR, dist_R$LR)))
     p_cpp <- dist_cpp$prob[match(allLR, dist_cpp$LR)]
     p_R   <- dist_R$prob  [match(allLR, dist_R$LR)]
@@ -48,11 +50,6 @@ check_lr_dist <- function(gen_cpp, gen_R,
   }
 }
 
-## tolerance settings
-TOL        <- 1e-8      # numeric comparison
-COLL_TOL   <- 1e-12     # collapse nearly-equal LR
-PROB_TOL   <- 1e-12     # drop negligible probability
-
 ## ------------------------------------------------------------------
 ## LR_ind : C++ vs. R  (n = 40)
 ## ------------------------------------------------------------------
@@ -60,11 +57,8 @@ test_that("lr_ind_dist – C++ and R engines numerically identical", {
   n     <- 40
   alpha <- 0.05
   
-  res_cpp <- lr_ind_dist(n, alpha)
-  res_R   <- fb_lrind_R(n, alpha)
-  
-  res_cpp <- strip_tiny(collapse_close(res_cpp, COLL_TOL), PROB_TOL)
-  res_R   <- strip_tiny(collapse_close(res_R,   COLL_TOL), PROB_TOL)
+  res_cpp <- strip_tiny(collapse_close(lr_ind_dist(n, alpha), COLL_TOL), PROB_TOL)
+  res_R   <- strip_tiny(collapse_close(fb_lrind_R (n, alpha), COLL_TOL), PROB_TOL)
   
   expect_equal(cumsum(res_cpp$prob), cumsum(res_R$prob), tolerance = TOL)
   expect_true(all(is.finite(res_cpp$prob)))
@@ -79,11 +73,8 @@ test_that("lr_cc_dist – C++ and R engines numerically identical", {
   n     <- 40
   alpha <- 0.05
   
-  res_cpp <- lr_cc_dist(n, alpha)
-  res_R   <- fb_lrcc_R(n, alpha)
-  
-  res_cpp <- strip_tiny(collapse_close(res_cpp, COLL_TOL), PROB_TOL)
-  res_R   <- strip_tiny(collapse_close(res_R,   COLL_TOL), PROB_TOL)
+  res_cpp <- strip_tiny(collapse_close(lr_cc_dist(n, alpha), COLL_TOL), PROB_TOL)
+  res_R   <- strip_tiny(collapse_close(fb_lrcc_R (n, alpha), COLL_TOL), PROB_TOL)
   
   expect_equal(cumsum(res_cpp$prob), cumsum(res_R$prob), tolerance = TOL)
   expect_true(all(is.finite(res_cpp$prob)))
@@ -92,7 +83,7 @@ test_that("lr_cc_dist – C++ and R engines numerically identical", {
 })
 
 ## ------------------------------------------------------------------
-## Lightweight finite-sample sanity checks (shared for ind & cc)
+## Lightweight finite-sample sanity checks
 ## ------------------------------------------------------------------
 test_that("lr_ind_dist / lr_cc_dist give valid finite-sample distributions", {
   skip_on_cran()
