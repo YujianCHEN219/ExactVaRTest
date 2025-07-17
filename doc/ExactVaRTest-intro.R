@@ -228,6 +228,31 @@ ggplot(df, aes(idx, pval, colour = method)) +
        title = "Rolling 250-day p-values (α = 1%)") +
   theme_bw()
 
+## ----example------------------------------------------------------------------
+library(ExactVaRTest)
+
+n_set      <- c(250, 500, 750, 1000)
+alpha_set  <- c(0.005, 0.01, 0.025, 0.05)
+gamma_set  <- c(0.90, 0.95, 0.99)
+
+q_lr <- function(d, g) d$LR[which(cumsum(d$prob) >= g)[1L]]
+
+tbl <- expand.grid(n = n_set,
+                   alpha = alpha_set,
+                   gamma = gamma_set,
+                   KEEP.OUT.ATTRS = FALSE,
+                   stringsAsFactors = FALSE)
+
+tbl$crit_ind <- mapply(function(n, a, g)
+  q_lr(lr_ind_dist(n, a, prune_threshold = 1e-15), g),
+  tbl$n, tbl$alpha, tbl$gamma, SIMPLIFY = TRUE)
+
+tbl$crit_cc <- mapply(function(n, a, g)
+  q_lr(lr_cc_dist(n, a, prune_threshold = 1e-15), g),
+  tbl$n, tbl$alpha, tbl$gamma, SIMPLIFY = TRUE)
+
+print(tbl, digits = 6)
+
 ## ----session-info, echo=FALSE-------------------------------------------------
 sessionInfo()
 
