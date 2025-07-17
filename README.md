@@ -9,13 +9,13 @@ R.
 <!-- badges: start -->
 <!-- badges: end -->
 
-ExactVaRTest implements dynamic programming algorithms (C++ backend with
-a pure-R fallback) that give the exact finite-sample distributions and
-p-values of Christoffersen’s (1998) independence (IND) and
-conditional-coverage (CC) tests for Value-at-Risk (VaR) exception
-series. And in particular, it corrects the severe size distortions that
-the usual asymptotic $\chi^2$ approximation suffers from in small
-samples and under extreme coverage rates.
+ExactVaRTest implements a (recursive-network) forward dynamic
+programming algorithm (C++ backend with a pure-R fallback) that gives
+the exact finite-sample distributions and p-values of Christoffersen’s
+(1998) independence (IND) and conditional-coverage (CC) tests for
+Value-at-Risk (VaR) exception series. And in particular, it corrects the
+severe size distortions that the usual asymptotic $\chi^2$ approximation
+suffers from in small samples and under extreme coverage rates.
 
 A one-shot helper `backtest_lr()` returns the LR statistic, its exact
 p-value, and a reject / fail-to-reject decision for a chosen
@@ -37,9 +37,9 @@ pak::pak("YujianCHEN219/ExactVaRTest")
 library(ExactVaRTest)
 
 set.seed(42)
-x <- rbinom(300, 1, 0.05)          # synthetic exception series (0 = OK, 1 = VaR breach)
+x <- rbinom(300, 1, 0.03)          # synthetic 0/1 exception series
 
-bt <- backtest_lr(x, alpha = 0.05, type = "cc")  # LR_cc back-test
+bt <- backtest_lr(x, alpha = 0.05, type = "cc")  # exact LR_cc back-test
 print(bt)
 #> Exact finite-sample back-test
 #> --------------------------------
@@ -47,9 +47,9 @@ print(bt)
 #> Sample size    : 300
 #> Model alpha    : 0.0500
 #> Signif. level  : 0.0500
-#> LR statistic   : 1.6798
-#> Exact p-value  : 0.5094
-#> Decision       : fail to reject at 5.00% level
+#> LR statistic   : 5.8882
+#> Exact p-value  : 0.0442
+#> Decision       : REJECT null at 5.00% level
 ```
 
 ## Main features
@@ -61,11 +61,20 @@ seconds.
 C++ implementation (`Rcpp`) with automatic fallback to a pure-R
 reference version.
 
-`backtest_lr()` returns statistic, exact p-value, and reject /
+`backtest_lr()` returns LR statistic, exact p-value, and reject /
 fail-to-reject decision in one single call.
 
 Minimal dependencies (`Rcpp`, `stats`), MIT-licensed, works on macOS,
 Linux, and Windows.
+
+## References
+
+1.  Christoffersen, P. F. (1998). *Evaluating interval forecasts.*
+    International economic review, 841-862.
+2.  Mehta, C. R., Patel, N. R., & Gray, R. (1985). *Computing an exact
+    confidence interval for the common odds ratio in several 2× 2
+    contingency tables.* Journal of the American Statistical
+    Association, 80(392), 969-973.
 
 ## Acknowledgements
 
