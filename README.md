@@ -9,13 +9,13 @@ R.
 <!-- badges: start -->
 <!-- badges: end -->
 
-ExactVaRTest implements a (recursive-network) forward dynamic
-programming algorithm (C++ backend with a pure-R fallback) that gives
-the exact finite-sample distributions and p-values of Christoffersen’s
-(1998) independence (IND) and conditional-coverage (CC) tests for
-Value-at-Risk (VaR) exception series. And in particular, it corrects the
-severe size distortions that the usual asymptotic $\chi^2$ approximation
-suffers from in small samples and under extreme coverage rates.
+**ExactVaRTest** implements a forward dynamic programming algorithm (C++
+backend with a pure-R fallback) that gives the exact finite-sample
+distributions and p-values of Christoffersen’s (1998) independence (IND)
+and conditional-coverage (CC) tests for Value-at-Risk (VaR) exception
+series. In particular, it corrects the severe size distortions from
+which the usual asymptotic $\chi^2$ approximation suffers in small
+samples and under extreme coverage rates.
 
 A one-shot helper `backtest_lr()` returns the LR statistic, its exact
 p-value, and a reject / fail-to-reject decision for a chosen

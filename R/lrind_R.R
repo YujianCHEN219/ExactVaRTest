@@ -66,6 +66,7 @@ fb_lrind_R <- function(n,
     S[, 3] * safe_log(1 - pi11) + S[, 5] * safe_log(pi11)
   
   LR <- -2 * (num - den)
+  LR[LR < 0 & LR > -1e-12] <- 0          
   
   keep <- is.finite(LR)
   LR   <- LR[keep]

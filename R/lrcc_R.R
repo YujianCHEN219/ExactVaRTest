@@ -80,6 +80,8 @@ fb_lrcc_R <- function(n,
     T10 * safe_log(1 - pi11) + T11 * safe_log(pi11)
   
   LR <- LRuc - 2 * (num - den)
+  LR[LR < 0 & LR > -1e-12] <- 0           
+  
   keep <- is.finite(LR)
   LR   <- LR[keep]
   S    <- S[keep, , drop = FALSE]

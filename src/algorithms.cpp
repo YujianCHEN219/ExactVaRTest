@@ -47,7 +47,6 @@ List fb_lrind_fastcpp(int n,
   cur.push_back({encode_state(1,0,0,0,0,S2,S3,S4,S5), 1,0,0,0,0, alpha});
   
   for (int t = 1; t < n; ++t) {
-    /* ---- prune current layer before expansion ---- */
     std::size_t keep = 0;
     for (std::size_t i = 0; i < cur.size(); ++i)
       if (cur[i].prob >= prune_threshold) cur[keep++] = cur[i];
@@ -58,7 +57,6 @@ List fb_lrind_fastcpp(int n,
       nxt.reserve(cur.size()*2);
       
       for (const auto &s : cur) {
-        /* X_t = 0 */
         {
           IndState ns = s;
           ns.last ? ++ns.s10 : ++ns.s00;
@@ -70,7 +68,6 @@ List fb_lrind_fastcpp(int n,
             if (slot.prob == 0.0) slot = ns; else slot.prob += ns.prob;
           }
         }
-        /* X_t = 1 */
         {
           IndState ns = s;
           ns.last ? ++ns.s11 : ++ns.s01;
@@ -88,7 +85,6 @@ List fb_lrind_fastcpp(int n,
       for (auto &kv : nxt) cur.push_back(kv.second);
   }
   
-  /* ---- final prune before LR calculation ---- */
   std::size_t keep = 0;
   for (std::size_t i = 0; i < cur.size(); ++i)
     if (cur[i].prob >= prune_threshold) cur[keep++] = cur[i];
@@ -97,7 +93,6 @@ List fb_lrind_fastcpp(int n,
       return List::create(_["LR"] = NumericVector(0),
                           _["prob"] = NumericVector(0));
     
-    /* ---------- LR calculation ---------- */
     std::unordered_map<double,double> dist;
     dist.reserve(cur.size());
     for (const auto &s : cur) {
@@ -112,6 +107,7 @@ List fb_lrind_fastcpp(int n,
         s.s10*safe_log(1-pi11) + s.s11*safe_log(pi11);
       
       double LR = -2.0*(num - den);
+      if (LR < 0 && LR > -1e-12) LR = 0.0;
       dist[LR] += s.prob;
     }
     
@@ -167,7 +163,6 @@ List fb_lrcc_fastcpp(int n,
       const CCState &s = kv.second;
       if (s.prob < prune_threshold) continue;
       
-      /* X_t = 0 */
       {
         CCState ns = s;
         ns.last ? ++ns.s10 : ++ns.s00;
@@ -179,7 +174,6 @@ List fb_lrcc_fastcpp(int n,
           if (slot.prob == 0.0) slot = ns; else slot.prob += ns.prob;
         }
       }
-      /* X_t = 1 */
       {
         CCState ns = s;
         ns.last ? ++ns.s11 : ++ns.s01;
@@ -218,7 +212,9 @@ List fb_lrcc_fastcpp(int n,
       s.s10*safe_log(1-pi11) + s.s11*safe_log(pi11);
     
     double LRind = -2.0*(num - den);
-    dist[LRuc + LRind] += s.prob;
+    double LR = LRuc + LRind;
+    if (LR < 0 && LR > -1e-12) LR = 0.0;
+    dist[LR] += s.prob;
   }
   
   std::vector<std::pair<double,double>> vec(dist.begin(), dist.end());
@@ -235,5 +231,3 @@ List fb_lrcc_fastcpp(int n,
   P_out = P_out / std::accumulate(P_out.begin(), P_out.end(), 0.0);
   return List::create(_["LR"] = LR_out, _["prob"] = P_out);
 }
-
-
