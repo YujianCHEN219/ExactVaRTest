@@ -53,7 +53,7 @@ C++ implementation (`Rcpp`) with automatic fallback to a pure-R reference versio
 
 `backtest_lr()` returns LR statistic, exact p-value, and reject / fail-to-reject decision in one single call.
 
-Minimal dependencies (`Rcpp`, `stats`), MIT-licensed, works on macOS, Linux, and Windows.
+Minimal dependencies (`Rcpp`, `stats`), works on macOS, Linux, and Windows.
 
 ## References
 1. Christoffersen, P. F. (1998). *Evaluating interval forecasts.* International economic review, 841-862.
@@ -68,4 +68,4 @@ In particular, Christian Francq generously shared the initial idea; without his 
 
 ## License
 
-MIT © 2025 Yujian Chen
+This package is free and open source software, licensed under GPL.

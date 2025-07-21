@@ -64,8 +64,8 @@ reference version.
 `backtest_lr()` returns LR statistic, exact p-value, and reject /
 fail-to-reject decision in one single call.
 
-Minimal dependencies (`Rcpp`, `stats`), MIT-licensed, works on macOS,
-Linux, and Windows.
+Minimal dependencies (`Rcpp`, `stats`), works on macOS, Linux, and
+Windows.
 
 ## References
 
@@ -86,4 +86,4 @@ without his help, this package would not exist.
 
 ## License
 
-MIT © 2025 Yujian Chen
+This package is free and open source software, licensed under GPL.
