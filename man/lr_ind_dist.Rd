@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrappers.R
 \name{lr_ind_dist}
 \alias{lr_ind_dist}
-\title{Exact LR_ind distribution (auto-select engine)}
+\title{Exact LR_ind distribution (auto‑select engine)}
 \usage{
 lr_ind_dist(n, alpha = 0.05, prune_threshold = 1e-15)
 }
@@ -12,20 +12,15 @@ lr_ind_dist(n, alpha = 0.05, prune_threshold = 1e-15)
 \item{alpha}{Exception probability \eqn{\alpha \in (0,1)}.}
 
 \item{prune_threshold}{Probability below which states are pruned by the
-dynamic-programming recursion.}
+dynamic‑programming recursion.}
 }
 \value{
-A data frame with two columns
-\describe{
-\item{LR}{unique LR values (ascending)}
-\item{prob}{exact probabilities (sum to 1)}
-}
+A list with elements \code{LR} and \code{prob}.
 }
 \description{
-Returns the finite-sample distribution of Christoffersen’s independence
+Returns the finite‑sample distribution of Christoffersen’s independence
 statistic \eqn{LR_{\mathrm{ind}}}.
 }
 \examples{
-## exact LR_ind distribution for n = 8, alpha = 0.05
 lr_ind_dist(8, 0.05)
 }

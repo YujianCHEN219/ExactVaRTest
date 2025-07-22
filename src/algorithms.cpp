@@ -36,8 +36,9 @@ List fb_lrind_fastcpp(int n,
                       double alpha = 0.05,
                       double prune_threshold = 1e-15)
 {
-  if (n < 1) return List::create(_["LR"] = NumericVector(0),
-      _["prob"] = NumericVector(0));
+  if (n < 1)
+    return List::create(_["LR"] = NumericVector(0),
+                        _["prob"] = NumericVector(0));
   
   long long S2 = 2LL, S3 = S2*(n+1), S4 = S3*(n+1), S5 = S4*(n+1);
   
@@ -127,7 +128,7 @@ List fb_lrind_fastcpp(int n,
 }
 
 /* ======================================================================
- *  LR_cc
+ *  LR_cc 
  * ====================================================================*/
 struct CCState {
   long long code = 0;
@@ -147,8 +148,10 @@ List fb_lrcc_fastcpp(int n,
                      double alpha = 0.05,
                      double prune_threshold = 1e-15)
 {
-  if (n < 1) return List::create(_["LR"] = NumericVector(0),
-      _["prob"] = NumericVector(0));
+  if (n < 1) return List::create(_["LR_cc"] = NumericVector(0),
+      _["prob_cc"] = NumericVector(0),
+      _["LR_uc"] = NumericVector(0),
+      _["prob_uc"] = NumericVector(0));
   
   std::unordered_map<long long,CCState,LLhash> cur;
   cur.reserve(2);
@@ -190,8 +193,10 @@ List fb_lrcc_fastcpp(int n,
     cur.swap(nxt);
   }
   
-  std::unordered_map<double,double> dist;
-  dist.reserve(cur.size());
+  std::unordered_map<double,double> dist_cc, dist_uc;
+  dist_cc.reserve(cur.size());
+  dist_uc.reserve(cur.size());
+  
   for (const auto &kv : cur) {
     const CCState &s = kv.second;
     
@@ -211,23 +216,34 @@ List fb_lrcc_fastcpp(int n,
     double den  = s.s00*safe_log(1-pi01) + s.s01*safe_log(pi01) +
       s.s10*safe_log(1-pi11) + s.s11*safe_log(pi11);
     
-    double LRind = -2.0*(num - den);
-    double LR = LRuc + LRind;
-    if (LR < 0 && LR > -1e-12) LR = 0.0;
-    dist[LR] += s.prob;
+    double LRcc = LRuc - 2.0*(num - den);
+    if (LRcc < 0 && LRcc > -1e-12) LRcc = 0.0;
+    
+    dist_cc[LRcc] += s.prob;
+    dist_uc[LRuc] += s.prob;
   }
   
-  std::vector<std::pair<double,double>> vec(dist.begin(), dist.end());
-  std::sort(vec.begin(), vec.end(),
-            [](const auto&a,const auto&b){ return a.first<b.first; });
+  auto make_vec = [](const std::unordered_map<double,double>& mp){
+    std::vector<std::pair<double,double>> v(mp.begin(), mp.end());
+    std::sort(v.begin(), v.end(),
+              [](const auto&a,const auto&b){ return a.first<b.first; });
+    NumericVector LR, P;
+    for (std::size_t i = 0; i < v.size();) {
+      double k = v[i].first, p = 0.0;
+      while (i < v.size() && v[i].first == k) { p += v[i].second; ++i; }
+      LR.push_back(k);
+      P.push_back(p);
+    }
+    P = P / std::accumulate(P.begin(), P.end(), 0.0);
+    return std::make_pair(LR, P);
+  };
   
-  NumericVector LR_out, P_out;
-  for (std::size_t i = 0; i < vec.size();) {
-    double curLR = vec[i].first, p = 0.0;
-    while (i < vec.size() && vec[i].first == curLR) { p += vec[i].second; ++i; }
-    LR_out.push_back(curLR);
-    P_out.push_back(p);
-  }
-  P_out = P_out / std::accumulate(P_out.begin(), P_out.end(), 0.0);
-  return List::create(_["LR"] = LR_out, _["prob"] = P_out);
+  auto cc = make_vec(dist_cc);
+  auto uc = make_vec(dist_uc);
+  
+  return List::create(
+    _["LR_cc"]  = cc.first, _["prob_cc"]  = cc.second,
+    _["LR_uc"]  = uc.first, _["prob_uc"]  = uc.second
+  );
 }
+

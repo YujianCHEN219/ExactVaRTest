@@ -7,24 +7,17 @@
 pval_lr_ind(lr_obs, n, alpha = 0.05, prune_threshold = 1e-15)
 }
 \arguments{
-\item{lr_obs}{Observed \eqn{LR_{\mathrm{ind}}} value.}
+\item{lr_obs}{Observed LR_ind statistic.}
 
-\item{n}{Integer sample size (\eqn{n \ge 1}).}
+\item{n}{Sample size.}
 
-\item{alpha}{Exception probability \eqn{\alpha \in (0,1)}.}
+\item{alpha}{Exception probability.}
 
-\item{prune_threshold}{Probability below which states are pruned by the
-dynamic-programming recursion.}
+\item{prune_threshold}{State-pruning threshold for DP engine.}
 }
 \value{
 Numeric p-value.
 }
 \description{
 Exact p-value for LR_ind
-}
-\examples{
-set.seed(1)
-x  <- rbinom(250, 1, 0.05)
-lr <- lr_ind_stat(x, 0.05)
-pval_lr_ind(lr, length(x), 0.05)
 }

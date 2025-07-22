@@ -15,10 +15,5 @@ lr_cc_stat(x, alpha = 0.05)
 Numeric LR_cc statistic.
 }
 \description{
-Computes \eqn{LR_{\mathrm{cc}} = LR_{\mathrm{uc}} + LR_{\mathrm{ind}}}.
-}
-\examples{
-set.seed(1)
-x <- rbinom(50, 1, 0.05)
-lr_cc_stat(x, 0.05)
+Christoffersen LR_cc statistic
 }

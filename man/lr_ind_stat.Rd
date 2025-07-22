@@ -17,8 +17,3 @@ Numeric LR_ind statistic.
 \description{
 Christoffersen LR_ind statistic
 }
-\examples{
-set.seed(1)
-x <- rbinom(50, 1, 0.05)
-lr_ind_stat(x, 0.05)
-}

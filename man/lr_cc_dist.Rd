@@ -2,7 +2,7 @@
 % Please edit documentation in R/wrappers.R
 \name{lr_cc_dist}
 \alias{lr_cc_dist}
-\title{Exact LR_cc distribution (auto-select engine)}
+\title{Exact LR_cc (and LR_uc) distribution (auto‑select engine)}
 \usage{
 lr_cc_dist(n, alpha = 0.05, prune_threshold = 1e-15)
 }
@@ -12,16 +12,18 @@ lr_cc_dist(n, alpha = 0.05, prune_threshold = 1e-15)
 \item{alpha}{Exception probability \eqn{\alpha \in (0,1)}.}
 
 \item{prune_threshold}{Probability below which states are pruned by the
-dynamic-programming recursion.}
+dynamic‑programming recursion.}
 }
 \value{
-A data frame with columns \code{LR} and \code{prob}.
+A list with elements \code{LR_cc}, \code{prob_cc}, \code{LR_uc},
+\code{prob_uc}.
 }
 \description{
-Returns the finite-sample distribution of Christoffersen’s
-conditional-coverage statistic \eqn{LR_{\mathrm{cc}}}.
+Returns the finite‑sample distribution of Christoffersen’s conditional‑coverage
+statistic \eqn{LR_{\mathrm{cc}}}.  The returned list also includes the matching
+unconditional‑coverage distribution \eqn{LR_{\mathrm{uc}}}, produced by the same
+dynamic‑programming run.
 }
 \examples{
-## exact LR_cc distribution for n = 8, alpha = 0.05
 lr_cc_dist(8, 0.05)
 }

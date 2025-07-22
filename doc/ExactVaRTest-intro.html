@@ -524,7 +524,7 @@ exact finite-sample distribution for a range of <span class="math inline">\(n\)<
 <tbody>
 <tr class="odd">
 <td align="right">50</td>
-<td align="right">0.007</td>
+<td align="right">0.006</td>
 <td align="right">0.009</td>
 <td align="right">0.013</td>
 </tr>
@@ -532,31 +532,31 @@ exact finite-sample distribution for a range of <span class="math inline">\(n\)<
 <td align="right">100</td>
 <td align="right">0.014</td>
 <td align="right">0.026</td>
-<td align="right">0.047</td>
+<td align="right">0.044</td>
 </tr>
 <tr class="odd">
 <td align="right">250</td>
-<td align="right">0.054</td>
+<td align="right">0.057</td>
 <td align="right">0.112</td>
-<td align="right">0.226</td>
+<td align="right">0.215</td>
 </tr>
 <tr class="even">
 <td align="right">500</td>
-<td align="right">0.152</td>
-<td align="right">0.344</td>
-<td align="right">0.777</td>
+<td align="right">0.153</td>
+<td align="right">0.348</td>
+<td align="right">0.731</td>
 </tr>
 <tr class="odd">
 <td align="right">750</td>
-<td align="right">0.285</td>
-<td align="right">0.680</td>
-<td align="right">1.575</td>
+<td align="right">0.290</td>
+<td align="right">0.679</td>
+<td align="right">1.534</td>
 </tr>
 <tr class="even">
 <td align="right">1000</td>
-<td align="right">0.454</td>
-<td align="right">1.123</td>
-<td align="right">2.718</td>
+<td align="right">0.457</td>
+<td align="right">1.131</td>
+<td align="right">2.578</td>
 </tr>
 </tbody>
 </table>
@@ -580,39 +580,39 @@ exact finite-sample distribution for a range of <span class="math inline">\(n\)<
 <tbody>
 <tr class="odd">
 <td align="right">50</td>
-<td align="right">0.006</td>
+<td align="right">0.005</td>
 <td align="right">0.009</td>
 <td align="right">0.013</td>
 </tr>
 <tr class="even">
 <td align="right">100</td>
-<td align="right">0.015</td>
-<td align="right">0.027</td>
-<td align="right">0.046</td>
+<td align="right">0.014</td>
+<td align="right">0.025</td>
+<td align="right">0.043</td>
 </tr>
 <tr class="odd">
 <td align="right">250</td>
-<td align="right">0.056</td>
-<td align="right">0.110</td>
-<td align="right">0.223</td>
+<td align="right">0.052</td>
+<td align="right">0.109</td>
+<td align="right">0.207</td>
 </tr>
 <tr class="even">
 <td align="right">500</td>
-<td align="right">0.151</td>
-<td align="right">0.364</td>
-<td align="right">0.761</td>
+<td align="right">0.147</td>
+<td align="right">0.341</td>
+<td align="right">0.716</td>
 </tr>
 <tr class="odd">
 <td align="right">750</td>
-<td align="right">0.295</td>
-<td align="right">0.701</td>
-<td align="right">1.964</td>
+<td align="right">0.277</td>
+<td align="right">0.656</td>
+<td align="right">1.495</td>
 </tr>
 <tr class="even">
 <td align="right">1000</td>
-<td align="right">0.466</td>
-<td align="right">1.157</td>
-<td align="right">3.589</td>
+<td align="right">0.433</td>
+<td align="right">1.057</td>
+<td align="right">2.652</td>
 </tr>
 </tbody>
 </table>
@@ -660,8 +660,8 @@ exact finite-sample distribution for a range of <span class="math inline">\(n\)<
 <span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 2</span></span>
 <span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co">#&gt;   expression   median</span></span>
 <span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt;</span></span>
-<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co">#&gt; 1 LR_ind        2.68s</span></span>
-<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="co">#&gt; 2 LR_cc         2.39s</span></span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co">#&gt; 1 LR_ind         2.1s</span></span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="co">#&gt; 2 LR_cc         1.83s</span></span>
 <span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a></span>
 <span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a>res_ind <span class="ot">&lt;-</span> <span class="fu">backtest_lr</span>(x, alpha, <span class="st">&quot;ind&quot;</span>)</span>
 <span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a>res_cc  <span class="ot">&lt;-</span> <span class="fu">backtest_lr</span>(x, alpha, <span class="st">&quot;cc&quot;</span>)</span>
@@ -686,7 +686,7 @@ exact finite-sample distribution for a range of <span class="math inline">\(n\)<
 <span id="cb4-66"><a href="#cb4-66" tabindex="-1"></a><span class="fu">print</span>(res_cc)</span>
 <span id="cb4-67"><a href="#cb4-67" tabindex="-1"></a><span class="co">#&gt; Exact finite-sample back-test</span></span>
 <span id="cb4-68"><a href="#cb4-68" tabindex="-1"></a><span class="co">#&gt; --------------------------------</span></span>
-<span id="cb4-69"><a href="#cb4-69" tabindex="-1"></a><span class="co">#&gt; Test           : Conditional-coverage (LR_cc)</span></span>
+<span id="cb4-69"><a href="#cb4-69" tabindex="-1"></a><span class="co">#&gt; Test           : Conditional coverage (LR_cc)</span></span>
 <span id="cb4-70"><a href="#cb4-70" tabindex="-1"></a><span class="co">#&gt; Sample size    : 2399</span></span>
 <span id="cb4-71"><a href="#cb4-71" tabindex="-1"></a><span class="co">#&gt; Model alpha    : 0.0100</span></span>
 <span id="cb4-72"><a href="#cb4-72" tabindex="-1"></a><span class="co">#&gt; Signif. level  : 0.0500</span></span>
@@ -702,21 +702,23 @@ exact finite-sample distribution for a range of <span class="math inline">\(n\)<
 <span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a>alpha  <span class="ot">&lt;-</span> <span class="fl">0.01</span></span>
 <span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a></span>
 <span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a>d_ind <span class="ot">&lt;-</span> <span class="fu">lr_ind_dist</span>(n, alpha)</span>
-<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>d_cc  <span class="ot">&lt;-</span> <span class="fu">lr_cc_dist</span>(n, alpha)</span>
-<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>oldpar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>)) </span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a>d_cc <span class="ot">&lt;-</span> <span class="fu">lr_cc_dist</span>(n, alpha)</span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a>d_cc<span class="sc">$</span>LR   <span class="ot">&lt;-</span> d_cc<span class="sc">$</span>LR_cc    </span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a>d_cc<span class="sc">$</span>prob <span class="ot">&lt;-</span> d_cc<span class="sc">$</span>prob_cc</span>
 <span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a></span>
-<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co"># LR_ind vs χ²(1)</span></span>
-<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">pchisq</span>(x, <span class="at">df =</span> <span class="dv">1</span>), <span class="dv">0</span>, <span class="dv">20</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">ylab =</span> <span class="st">&quot;CDF&quot;</span>,</span>
-<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a>      <span class="at">xlab =</span> <span class="st">&quot;LR_ind statistic&quot;</span>, <span class="at">main =</span> <span class="st">&quot;LR_ind&quot;</span>)</span>
-<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">stepfun</span>(d_ind<span class="sc">$</span>LR, <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">cumsum</span>(d_ind<span class="sc">$</span>prob))), <span class="at">pch =</span> <span class="dv">19</span>)</span>
-<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;Chi-sq(1)&quot;</span>, <span class="st">&quot;Exact&quot;</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span>
-<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a></span>
-<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co"># LR_cc vs χ²(2)</span></span>
-<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">pchisq</span>(x, <span class="at">df =</span> <span class="dv">2</span>), <span class="dv">0</span>, <span class="dv">30</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">ylab =</span> <span class="st">&quot;CDF&quot;</span>,</span>
-<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>      <span class="at">xlab =</span> <span class="st">&quot;LR_cc statistic&quot;</span>, <span class="at">main =</span> <span class="st">&quot;LR_cc&quot;</span>)</span>
-<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">stepfun</span>(d_cc<span class="sc">$</span>LR, <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">cumsum</span>(d_cc<span class="sc">$</span>prob))), <span class="at">pch =</span> <span class="dv">19</span>)</span>
-<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;Chi-sq(2)&quot;</span>, <span class="st">&quot;Exact&quot;</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span></code></pre></div>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a>oldpar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>), <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">2</span>, <span class="dv">1</span>)) </span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co"># LR_ind vs χ²(1)</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">pchisq</span>(x, <span class="at">df =</span> <span class="dv">1</span>), <span class="dv">0</span>, <span class="dv">20</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">ylab =</span> <span class="st">&quot;CDF&quot;</span>,</span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a>      <span class="at">xlab =</span> <span class="st">&quot;LR_ind statistic&quot;</span>, <span class="at">main =</span> <span class="st">&quot;LR_ind&quot;</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">stepfun</span>(d_ind<span class="sc">$</span>LR, <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">cumsum</span>(d_ind<span class="sc">$</span>prob))), <span class="at">pch =</span> <span class="dv">19</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;Chi-sq(1)&quot;</span>, <span class="st">&quot;Exact&quot;</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co"># LR_cc vs χ²(2)</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="fu">curve</span>(<span class="fu">pchisq</span>(x, <span class="at">df =</span> <span class="dv">2</span>), <span class="dv">0</span>, <span class="dv">30</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">ylab =</span> <span class="st">&quot;CDF&quot;</span>,</span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>      <span class="at">xlab =</span> <span class="st">&quot;LR_cc statistic&quot;</span>, <span class="at">main =</span> <span class="st">&quot;LR_cc&quot;</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">stepfun</span>(d_cc<span class="sc">$</span>LR, <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">cumsum</span>(d_cc<span class="sc">$</span>prob))), <span class="at">pch =</span> <span class="dv">19</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;bottomright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;Chi-sq(2)&quot;</span>, <span class="st">&quot;Exact&quot;</span>), <span class="at">lty =</span> <span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">1</span>), <span class="at">bty =</span> <span class="st">&quot;n&quot;</span>)</span></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a></span>
 <span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">par</span>(oldpar) </span></code></pre></div>
@@ -849,60 +851,63 @@ null when <span class="math inline">\(n\)</span> = 250 and <span class="math inl
 <span id="cb9-16"><a href="#cb9-16" tabindex="-1"></a>  <span class="fu">q_lr</span>(<span class="fu">lr_ind_dist</span>(n, a, <span class="at">prune_threshold =</span> <span class="fl">1e-15</span>), g),</span>
 <span id="cb9-17"><a href="#cb9-17" tabindex="-1"></a>  tbl<span class="sc">$</span>n, tbl<span class="sc">$</span>alpha, tbl<span class="sc">$</span>gamma, <span class="at">SIMPLIFY =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb9-18"><a href="#cb9-18" tabindex="-1"></a></span>
-<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a>tbl<span class="sc">$</span>crit_cc <span class="ot">&lt;-</span> <span class="fu">mapply</span>(<span class="cf">function</span>(n, a, g)</span>
-<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a>  <span class="fu">q_lr</span>(<span class="fu">lr_cc_dist</span>(n, a, <span class="at">prune_threshold =</span> <span class="fl">1e-15</span>), g),</span>
-<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a>  tbl<span class="sc">$</span>n, tbl<span class="sc">$</span>alpha, tbl<span class="sc">$</span>gamma, <span class="at">SIMPLIFY =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a></span>
-<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a><span class="fu">print</span>(tbl, <span class="at">digits =</span> <span class="dv">6</span>)</span>
-<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a><span class="co">#&gt;       n alpha gamma  crit_ind crit_cc</span></span>
-<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a><span class="co">#&gt; 1   250 0.005  0.90 0.0731725 2.50627</span></span>
-<span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a><span class="co">#&gt; 2   500 0.005  0.90 0.1012163 5.01254</span></span>
-<span id="cb9-27"><a href="#cb9-27" tabindex="-1"></a><span class="co">#&gt; 3   750 0.005  0.90 0.0969055 2.86928</span></span>
-<span id="cb9-28"><a href="#cb9-28" tabindex="-1"></a><span class="co">#&gt; 4  1000 0.005  0.90 0.1291639 2.75990</span></span>
-<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a><span class="co">#&gt; 5   250 0.010  0.90 0.2049324 5.02517</span></span>
-<span id="cb9-30"><a href="#cb9-30" tabindex="-1"></a><span class="co">#&gt; 6   500 0.010  0.90 0.3306308 3.90104</span></span>
-<span id="cb9-31"><a href="#cb9-31" tabindex="-1"></a><span class="co">#&gt; 7   750 0.010  0.90 0.4592630 3.55360</span></span>
-<span id="cb9-32"><a href="#cb9-32" tabindex="-1"></a><span class="co">#&gt; 8  1000 0.010  0.90 0.6605875 3.48837</span></span>
-<span id="cb9-33"><a href="#cb9-33" tabindex="-1"></a><span class="co">#&gt; 9   250 0.025  0.90 1.2157096 4.04724</span></span>
-<span id="cb9-34"><a href="#cb9-34" tabindex="-1"></a><span class="co">#&gt; 10  500 0.025  0.90 1.4290833 3.96582</span></span>
-<span id="cb9-35"><a href="#cb9-35" tabindex="-1"></a><span class="co">#&gt; 11  750 0.025  0.90 1.7268626 4.07639</span></span>
-<span id="cb9-36"><a href="#cb9-36" tabindex="-1"></a><span class="co">#&gt; 12 1000 0.025  0.90 1.9858767 4.29970</span></span>
-<span id="cb9-37"><a href="#cb9-37" tabindex="-1"></a><span class="co">#&gt; 13  250 0.050  0.90 2.1991552 4.17997</span></span>
-<span id="cb9-38"><a href="#cb9-38" tabindex="-1"></a><span class="co">#&gt; 14  500 0.050  0.90 2.8597921 4.28064</span></span>
-<span id="cb9-39"><a href="#cb9-39" tabindex="-1"></a><span class="co">#&gt; 15  750 0.050  0.90 3.4327481 4.70935</span></span>
-<span id="cb9-40"><a href="#cb9-40" tabindex="-1"></a><span class="co">#&gt; 16 1000 0.050  0.90 3.4279941 5.10920</span></span>
-<span id="cb9-41"><a href="#cb9-41" tabindex="-1"></a><span class="co">#&gt; 17  250 0.005  0.95 0.0731725 2.50627</span></span>
-<span id="cb9-42"><a href="#cb9-42" tabindex="-1"></a><span class="co">#&gt; 18  500 0.005  0.95 0.1460482 5.01254</span></span>
-<span id="cb9-43"><a href="#cb9-43" tabindex="-1"></a><span class="co">#&gt; 19  750 0.005  0.95 0.1727429 5.51438</span></span>
-<span id="cb9-44"><a href="#cb9-44" tabindex="-1"></a><span class="co">#&gt; 20 1000 0.005  0.95 0.2022279 4.79919</span></span>
-<span id="cb9-45"><a href="#cb9-45" tabindex="-1"></a><span class="co">#&gt; 21  250 0.010  0.95 0.2963264 5.02517</span></span>
-<span id="cb9-46"><a href="#cb9-46" tabindex="-1"></a><span class="co">#&gt; 22  500 0.010  0.95 0.5914356 4.81738</span></span>
-<span id="cb9-47"><a href="#cb9-47" tabindex="-1"></a><span class="co">#&gt; 23  750 0.010  0.95 2.4520439 4.86766</span></span>
-<span id="cb9-48"><a href="#cb9-48" tabindex="-1"></a><span class="co">#&gt; 24 1000 0.010  0.95 2.2895735 4.73813</span></span>
-<span id="cb9-49"><a href="#cb9-49" tabindex="-1"></a><span class="co">#&gt; 25  250 0.025  0.95 2.1299655 5.05740</span></span>
-<span id="cb9-50"><a href="#cb9-50" tabindex="-1"></a><span class="co">#&gt; 26  500 0.025  0.95 2.1264875 4.87436</span></span>
-<span id="cb9-51"><a href="#cb9-51" tabindex="-1"></a><span class="co">#&gt; 27  750 0.025  0.95 2.2715480 5.30402</span></span>
-<span id="cb9-52"><a href="#cb9-52" tabindex="-1"></a><span class="co">#&gt; 28 1000 0.025  0.95 2.5420524 5.27782</span></span>
-<span id="cb9-53"><a href="#cb9-53" tabindex="-1"></a><span class="co">#&gt; 29  250 0.050  0.95 2.7567697 5.13136</span></span>
-<span id="cb9-54"><a href="#cb9-54" tabindex="-1"></a><span class="co">#&gt; 30  500 0.050  0.95 3.5809977 5.75129</span></span>
-<span id="cb9-55"><a href="#cb9-55" tabindex="-1"></a><span class="co">#&gt; 31  750 0.050  0.95 4.2471839 6.01030</span></span>
-<span id="cb9-56"><a href="#cb9-56" tabindex="-1"></a><span class="co">#&gt; 32 1000 0.050  0.95 4.6426434 6.12779</span></span>
-<span id="cb9-57"><a href="#cb9-57" tabindex="-1"></a><span class="co">#&gt; 33  250 0.005  0.99 0.2049324 6.62469</span></span>
-<span id="cb9-58"><a href="#cb9-58" tabindex="-1"></a><span class="co">#&gt; 34  500 0.005  0.99 3.7111594 6.89560</span></span>
-<span id="cb9-59"><a href="#cb9-59" tabindex="-1"></a><span class="co">#&gt; 35  750 0.005  0.99 4.4899685 7.51881</span></span>
-<span id="cb9-60"><a href="#cb9-60" tabindex="-1"></a><span class="co">#&gt; 36 1000 0.005  0.99 5.0493919 9.12143</span></span>
-<span id="cb9-61"><a href="#cb9-61" tabindex="-1"></a><span class="co">#&gt; 37  250 0.010  0.99 4.1069933 5.97855</span></span>
-<span id="cb9-62"><a href="#cb9-62" tabindex="-1"></a><span class="co">#&gt; 38  500 0.010  0.99 4.4799364 9.66885</span></span>
-<span id="cb9-63"><a href="#cb9-63" tabindex="-1"></a><span class="co">#&gt; 39  750 0.010  0.99 4.4899685 8.25054</span></span>
-<span id="cb9-64"><a href="#cb9-64" tabindex="-1"></a><span class="co">#&gt; 40 1000 0.010  0.99 4.4018324 7.82271</span></span>
-<span id="cb9-65"><a href="#cb9-65" tabindex="-1"></a><span class="co">#&gt; 41  250 0.025  0.99 4.1069933 7.56456</span></span>
-<span id="cb9-66"><a href="#cb9-66" tabindex="-1"></a><span class="co">#&gt; 42  500 0.025  0.99 4.8535774 8.09652</span></span>
-<span id="cb9-67"><a href="#cb9-67" tabindex="-1"></a><span class="co">#&gt; 43  750 0.025  0.99 4.5970685 8.20197</span></span>
-<span id="cb9-68"><a href="#cb9-68" tabindex="-1"></a><span class="co">#&gt; 44 1000 0.025  0.99 4.7340722 8.12242</span></span>
-<span id="cb9-69"><a href="#cb9-69" tabindex="-1"></a><span class="co">#&gt; 45  250 0.050  0.99 4.6200835 8.31579</span></span>
-<span id="cb9-70"><a href="#cb9-70" tabindex="-1"></a><span class="co">#&gt; 46  500 0.050  0.99 5.1611861 8.61684</span></span>
-<span id="cb9-71"><a href="#cb9-71" tabindex="-1"></a><span class="co">#&gt; 47  750 0.050  0.99 5.7567648 8.82765</span></span>
-<span id="cb9-72"><a href="#cb9-72" tabindex="-1"></a><span class="co">#&gt; 48 1000 0.050  0.99 6.4125291 9.03016</span></span></code></pre></div>
+<span id="cb9-19"><a href="#cb9-19" tabindex="-1"></a>tbl<span class="sc">$</span>crit_cc <span class="ot">&lt;-</span> <span class="fu">mapply</span>(<span class="cf">function</span>(n, a, g) {</span>
+<span id="cb9-20"><a href="#cb9-20" tabindex="-1"></a>  d <span class="ot">&lt;-</span> <span class="fu">lr_cc_dist</span>(n, a, <span class="at">prune_threshold =</span> <span class="fl">1e-15</span>)</span>
+<span id="cb9-21"><a href="#cb9-21" tabindex="-1"></a>  d<span class="sc">$</span>LR   <span class="ot">&lt;-</span> d<span class="sc">$</span>LR_cc      </span>
+<span id="cb9-22"><a href="#cb9-22" tabindex="-1"></a>  d<span class="sc">$</span>prob <span class="ot">&lt;-</span> d<span class="sc">$</span>prob_cc   </span>
+<span id="cb9-23"><a href="#cb9-23" tabindex="-1"></a>  <span class="fu">q_lr</span>(d, g)</span>
+<span id="cb9-24"><a href="#cb9-24" tabindex="-1"></a>}, tbl<span class="sc">$</span>n, tbl<span class="sc">$</span>alpha, tbl<span class="sc">$</span>gamma, <span class="at">SIMPLIFY =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-25"><a href="#cb9-25" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" tabindex="-1"></a><span class="fu">print</span>(tbl, <span class="at">digits =</span> <span class="dv">6</span>)</span>
+<span id="cb9-27"><a href="#cb9-27" tabindex="-1"></a><span class="co">#&gt;       n alpha gamma  crit_ind crit_cc</span></span>
+<span id="cb9-28"><a href="#cb9-28" tabindex="-1"></a><span class="co">#&gt; 1   250 0.005  0.90 0.0731725 2.50627</span></span>
+<span id="cb9-29"><a href="#cb9-29" tabindex="-1"></a><span class="co">#&gt; 2   500 0.005  0.90 0.1012163 5.01254</span></span>
+<span id="cb9-30"><a href="#cb9-30" tabindex="-1"></a><span class="co">#&gt; 3   750 0.005  0.90 0.0969055 2.86928</span></span>
+<span id="cb9-31"><a href="#cb9-31" tabindex="-1"></a><span class="co">#&gt; 4  1000 0.005  0.90 0.1291639 2.75990</span></span>
+<span id="cb9-32"><a href="#cb9-32" tabindex="-1"></a><span class="co">#&gt; 5   250 0.010  0.90 0.2049324 5.02517</span></span>
+<span id="cb9-33"><a href="#cb9-33" tabindex="-1"></a><span class="co">#&gt; 6   500 0.010  0.90 0.3306308 3.90104</span></span>
+<span id="cb9-34"><a href="#cb9-34" tabindex="-1"></a><span class="co">#&gt; 7   750 0.010  0.90 0.4592630 3.55360</span></span>
+<span id="cb9-35"><a href="#cb9-35" tabindex="-1"></a><span class="co">#&gt; 8  1000 0.010  0.90 0.6605875 3.48837</span></span>
+<span id="cb9-36"><a href="#cb9-36" tabindex="-1"></a><span class="co">#&gt; 9   250 0.025  0.90 1.2157096 4.04724</span></span>
+<span id="cb9-37"><a href="#cb9-37" tabindex="-1"></a><span class="co">#&gt; 10  500 0.025  0.90 1.4290833 3.96582</span></span>
+<span id="cb9-38"><a href="#cb9-38" tabindex="-1"></a><span class="co">#&gt; 11  750 0.025  0.90 1.7268626 4.07639</span></span>
+<span id="cb9-39"><a href="#cb9-39" tabindex="-1"></a><span class="co">#&gt; 12 1000 0.025  0.90 1.9858767 4.29970</span></span>
+<span id="cb9-40"><a href="#cb9-40" tabindex="-1"></a><span class="co">#&gt; 13  250 0.050  0.90 2.1991552 4.17997</span></span>
+<span id="cb9-41"><a href="#cb9-41" tabindex="-1"></a><span class="co">#&gt; 14  500 0.050  0.90 2.8597921 4.28064</span></span>
+<span id="cb9-42"><a href="#cb9-42" tabindex="-1"></a><span class="co">#&gt; 15  750 0.050  0.90 3.4327481 4.70935</span></span>
+<span id="cb9-43"><a href="#cb9-43" tabindex="-1"></a><span class="co">#&gt; 16 1000 0.050  0.90 3.4279941 5.10920</span></span>
+<span id="cb9-44"><a href="#cb9-44" tabindex="-1"></a><span class="co">#&gt; 17  250 0.005  0.95 0.0731725 2.50627</span></span>
+<span id="cb9-45"><a href="#cb9-45" tabindex="-1"></a><span class="co">#&gt; 18  500 0.005  0.95 0.1460482 5.01254</span></span>
+<span id="cb9-46"><a href="#cb9-46" tabindex="-1"></a><span class="co">#&gt; 19  750 0.005  0.95 0.1727429 5.51438</span></span>
+<span id="cb9-47"><a href="#cb9-47" tabindex="-1"></a><span class="co">#&gt; 20 1000 0.005  0.95 0.2022279 4.79919</span></span>
+<span id="cb9-48"><a href="#cb9-48" tabindex="-1"></a><span class="co">#&gt; 21  250 0.010  0.95 0.2963264 5.02517</span></span>
+<span id="cb9-49"><a href="#cb9-49" tabindex="-1"></a><span class="co">#&gt; 22  500 0.010  0.95 0.5914356 4.81738</span></span>
+<span id="cb9-50"><a href="#cb9-50" tabindex="-1"></a><span class="co">#&gt; 23  750 0.010  0.95 2.4520439 4.86766</span></span>
+<span id="cb9-51"><a href="#cb9-51" tabindex="-1"></a><span class="co">#&gt; 24 1000 0.010  0.95 2.2895735 4.73813</span></span>
+<span id="cb9-52"><a href="#cb9-52" tabindex="-1"></a><span class="co">#&gt; 25  250 0.025  0.95 2.1299655 5.05740</span></span>
+<span id="cb9-53"><a href="#cb9-53" tabindex="-1"></a><span class="co">#&gt; 26  500 0.025  0.95 2.1264875 4.87436</span></span>
+<span id="cb9-54"><a href="#cb9-54" tabindex="-1"></a><span class="co">#&gt; 27  750 0.025  0.95 2.2715480 5.30402</span></span>
+<span id="cb9-55"><a href="#cb9-55" tabindex="-1"></a><span class="co">#&gt; 28 1000 0.025  0.95 2.5420524 5.27782</span></span>
+<span id="cb9-56"><a href="#cb9-56" tabindex="-1"></a><span class="co">#&gt; 29  250 0.050  0.95 2.7567697 5.13136</span></span>
+<span id="cb9-57"><a href="#cb9-57" tabindex="-1"></a><span class="co">#&gt; 30  500 0.050  0.95 3.5809977 5.75129</span></span>
+<span id="cb9-58"><a href="#cb9-58" tabindex="-1"></a><span class="co">#&gt; 31  750 0.050  0.95 4.2471839 6.01030</span></span>
+<span id="cb9-59"><a href="#cb9-59" tabindex="-1"></a><span class="co">#&gt; 32 1000 0.050  0.95 4.6426434 6.12779</span></span>
+<span id="cb9-60"><a href="#cb9-60" tabindex="-1"></a><span class="co">#&gt; 33  250 0.005  0.99 0.2049324 6.62469</span></span>
+<span id="cb9-61"><a href="#cb9-61" tabindex="-1"></a><span class="co">#&gt; 34  500 0.005  0.99 3.7111594 6.89560</span></span>
+<span id="cb9-62"><a href="#cb9-62" tabindex="-1"></a><span class="co">#&gt; 35  750 0.005  0.99 4.4899685 7.51881</span></span>
+<span id="cb9-63"><a href="#cb9-63" tabindex="-1"></a><span class="co">#&gt; 36 1000 0.005  0.99 5.0493919 9.12143</span></span>
+<span id="cb9-64"><a href="#cb9-64" tabindex="-1"></a><span class="co">#&gt; 37  250 0.010  0.99 4.1069933 5.97855</span></span>
+<span id="cb9-65"><a href="#cb9-65" tabindex="-1"></a><span class="co">#&gt; 38  500 0.010  0.99 4.4799364 9.66885</span></span>
+<span id="cb9-66"><a href="#cb9-66" tabindex="-1"></a><span class="co">#&gt; 39  750 0.010  0.99 4.4899685 8.25054</span></span>
+<span id="cb9-67"><a href="#cb9-67" tabindex="-1"></a><span class="co">#&gt; 40 1000 0.010  0.99 4.4018324 7.82271</span></span>
+<span id="cb9-68"><a href="#cb9-68" tabindex="-1"></a><span class="co">#&gt; 41  250 0.025  0.99 4.1069933 7.56456</span></span>
+<span id="cb9-69"><a href="#cb9-69" tabindex="-1"></a><span class="co">#&gt; 42  500 0.025  0.99 4.8535774 8.09652</span></span>
+<span id="cb9-70"><a href="#cb9-70" tabindex="-1"></a><span class="co">#&gt; 43  750 0.025  0.99 4.5970685 8.20197</span></span>
+<span id="cb9-71"><a href="#cb9-71" tabindex="-1"></a><span class="co">#&gt; 44 1000 0.025  0.99 4.7340722 8.12242</span></span>
+<span id="cb9-72"><a href="#cb9-72" tabindex="-1"></a><span class="co">#&gt; 45  250 0.050  0.99 4.6200835 8.31579</span></span>
+<span id="cb9-73"><a href="#cb9-73" tabindex="-1"></a><span class="co">#&gt; 46  500 0.050  0.99 5.1611861 8.61684</span></span>
+<span id="cb9-74"><a href="#cb9-74" tabindex="-1"></a><span class="co">#&gt; 47  750 0.050  0.99 5.7567648 8.82765</span></span>
+<span id="cb9-75"><a href="#cb9-75" tabindex="-1"></a><span class="co">#&gt; 48 1000 0.050  0.99 6.4125291 9.03016</span></span></code></pre></div>
 <pre><code>#&gt; R version 4.2.3 (2023-03-15)
 #&gt; Platform: x86_64-apple-darwin17.0 (64-bit)
 #&gt; Running under: macOS Catalina 10.15.1
@@ -920,7 +925,7 @@ null when <span class="math inline">\(n\)</span> = 250 and <span class="math inl
 #&gt; other attached packages:
 #&gt; [1] ggplot2_3.5.2      xts_0.13.1         zoo_1.8-12         knitr_1.50        
 #&gt; [5] purrr_1.0.4        tidyr_1.3.1        dplyr_1.1.4        bench_1.1.4       
-#&gt; [9] ExactVaRTest_0.1.0
+#&gt; [9] ExactVaRTest_0.1.1
 #&gt; 
 #&gt; loaded via a namespace (and not attached):
 #&gt;  [1] Rcpp_1.1.0        pillar_1.10.2     bslib_0.9.0       compiler_4.2.3   

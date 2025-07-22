@@ -1,12 +1,13 @@
 ## ------------------------------------------------------------------
-##  Pure-R exact distribution of Christoffersen's LR_cc
+##  Pure‑R exact distribution of Christoffersen's LR_cc
 ## ------------------------------------------------------------------
 fb_lrcc_R <- function(n,
                       alpha           = 0.05,
                       prune_threshold = 1e-15) {
   
   if (n < 2)
-    return(list(LR = 0, prob = 1))
+    return(list(LR_cc = 0, prob_cc = 1,
+                LR_uc = 0, prob_uc = 1))
   
   LRuc_count <- function(c1, n, p) {
     p_   <- max(min(p, 1 - EPS), EPS)
@@ -60,7 +61,8 @@ fb_lrcc_R <- function(n,
   
   S <- S[S[, 7] >= prune_threshold, , drop = FALSE]
   if (!nrow(S))
-    return(list(LR = numeric(0), prob = numeric(0)))
+    return(list(LR_cc = numeric(0), prob_cc = numeric(0),
+                LR_uc = numeric(0), prob_uc = numeric(0)))
   
   c1  <- S[, 2]
   T00 <- S[, 3]; T10 <- S[, 4]; T01 <- S[, 5]; T11 <- S[, 6]
@@ -79,29 +81,35 @@ fb_lrcc_R <- function(n,
   den  <- T00 * safe_log(1 - pi01) + T01 * safe_log(pi01) +
     T10 * safe_log(1 - pi11) + T11 * safe_log(pi11)
   
-  LR <- LRuc - 2 * (num - den)
-  LR[LR < 0 & LR > -1e-12] <- 0           
+  LRcc <- LRuc - 2 * (num - den)
+  LRcc[LRcc < 0 & LRcc > -1e-12] <- 0  
   
-  keep <- is.finite(LR)
-  LR   <- LR[keep]
-  S    <- S[keep, , drop = FALSE]
+  keep <- is.finite(LRcc) & is.finite(LRuc)
+  LRcc <- LRcc[keep]; LRuc <- LRuc[keep]
+  P    <- S[keep, 7]
+  if (!length(LRcc))
+    return(list(LR_cc = numeric(0), prob_cc = numeric(0),
+                LR_uc = numeric(0), prob_uc = numeric(0)))
   
-  out <- cbind(LR, S[, 7])
-  out <- out[order(out[, 1]), , drop = FALSE]
-  
-  idx <- c(which(diff(out[, 1]) != 0), nrow(out))
-  res <- out[idx, , drop = FALSE]
-  start <- 1L
-  for (i in seq_along(idx)) {
-    s <- start; e <- idx[i]
-    if (s < e) res[i, 2] <- sum(out[s:e, 2])
-    start <- e + 1L
+  agg <- function(val, prob) {
+    o   <- order(val)
+    val <- val[o]; prob <- prob[o]
+    idx <- c(which(diff(val) != 0), length(val))
+    res_val  <- val[idx]
+    res_prob <- numeric(length(idx))
+    start <- 1L
+    for (i in seq_along(idx)) {
+      s <- start; e <- idx[i]
+      res_prob[i] <- sum(prob[s:e])
+      start <- e + 1L
+    }
+    res_prob <- res_prob / sum(res_prob)
+    list(val = res_val, prob = res_prob)
   }
   
-  s <- sum(res[, 2])
-  if (s == 0)
-    return(list(LR = numeric(0), prob = numeric(0)))
+  cc <- agg(LRcc, P)
+  uc <- agg(LRuc, P)
   
-  res[, 2] <- res[, 2] / s
-  list(LR = res[, 1], prob = res[, 2])
+  list(LR_cc = cc$val,  prob_cc = cc$prob,
+       LR_uc = uc$val,  prob_uc = uc$prob)
 }

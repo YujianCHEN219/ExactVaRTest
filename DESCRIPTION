@@ -1,19 +1,20 @@
 Package: ExactVaRTest
 Title: Exact Finite-Sample VaR Back-Testing
-Version: 0.1.0
-Date: 2025-07-15
+Version: 0.1.1
+Date: 2025-07-22
 Authors@R:
     person("Yujian", "Chen",
            email = "yjc4996@gmail.com",
            role  = c("aut", "cre"))
-Description: Provides fast dynamic programming algorithms for the exact
-    finite-sample distribution and p-values of Christoffersen's (1998)
-    independence (IND) and conditional-coverage (CC) tests for
-    Value-at-Risk (VaR) exception series.
-License: MIT + file LICENSE
-Depends: R (>= 3.5.0)
+Description: Provides fast dynamic‑programming algorithms in C++/Rcpp
+    (with pure‑R fallbacks) for the exact finite‑sample distributions
+    and p‑values of Christoffersen's (1998) independence (IND) and
+    conditional‑coverage (CC) VaR back‑tests, plus unconditional‑coverage
+    (UC) tests via closed‑form binomial enumeration.
+License: GPL (>= 3) + file LICENSE
 Imports:
-    Rcpp
+    Rcpp,
+    stats
 LinkingTo:
     Rcpp
 Suggests:
@@ -37,3 +38,4 @@ Acknowledgements: |
     In particular, Christian Francq generously shared the initial idea; without his help, this package would not exist.
 Config/testthat/edition: 3
 VignetteBuilder: knitr
+

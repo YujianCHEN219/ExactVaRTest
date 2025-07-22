@@ -9,17 +9,23 @@ R.
 <!-- badges: start -->
 <!-- badges: end -->
 
-**ExactVaRTest** implements a forward dynamic programming algorithm (C++
-backend with a pure-R fallback) that gives the exact finite-sample
-distributions and p-values of Christoffersen’s (1998) independence (IND)
-and conditional-coverage (CC) tests for Value-at-Risk (VaR) exception
-series. In particular, it corrects the severe size distortions from
-which the usual asymptotic $\chi^2$ approximation suffers in small
-samples and under extreme coverage rates.
+**ExactVaRTest** implements a forward dynamic programming algorithm that
+gives the exact finite-sample distributions and p-values of
+Christoffersen’s (1998) independence (IND) and conditional-coverage (CC)
+tests for Value-at-Risk (VaR) exception series. For completeness, it
+also provides the exact unconditional‑coverage (UC) test via a
+closed‑form binomial enumeration.
 
-A one-shot helper `backtest_lr()` returns the LR statistic, its exact
-p-value, and a reject / fail-to-reject decision for a chosen
-significance level.
+In particular, it corrects the severe size distortions from which the
+usual asymptotic $\chi^2$ approximation suffers in small samples and
+under extreme coverage rates.
+
+- `backtest_lr()` returns the LR statistic, its exact p‑value, and a
+  reject / fail‑to‑reject decision for one chosen test type (UC, IND, or
+  CC).
+
+- `backtest_all()` runs the UC, IND, and CC tests jointly and returns
+  summaries for all three statistics.
 
 ## Installation
 
@@ -43,7 +49,7 @@ bt <- backtest_lr(x, alpha = 0.05, type = "cc")  # exact LR_cc back-test
 print(bt)
 #> Exact finite-sample back-test
 #> --------------------------------
-#> Test           : Conditional-coverage (LR_cc)
+#> Test           : Conditional coverage (LR_cc)
 #> Sample size    : 300
 #> Model alpha    : 0.0500
 #> Signif. level  : 0.0500
@@ -54,23 +60,21 @@ print(bt)
 
 ## Main features
 
-Exact LR distributions and p-values for any sample size $n$; for
-$n \le 2\,000$ the computation finishes in milliseconds to a few
-seconds.
+- Exact finite‑sample distributions and p‑values for LR_ind and LR_cc at
+  any sample size *n*; for *n* ≤ 2000 the computation finishes in
+  milliseconds to a few seconds.
 
-C++ implementation (`Rcpp`) with automatic fallback to a pure-R
-reference version.
+- C++ implementation via `Rcpp`, with automatic fallback to a pure‑R
+  reference engine.
 
-`backtest_lr()` returns LR statistic, exact p-value, and reject /
-fail-to-reject decision in one single call.
-
-Minimal dependencies (`Rcpp`, `stats`), works on macOS, Linux, and
-Windows.
+- Minimal dependencies (`Rcpp`, `stats`); works on macOS, Linux, and
+  Windows.
 
 ## References
 
 1.  Christoffersen, P. F. (1998). *Evaluating interval forecasts.*
     International economic review, 841-862.
+
 2.  Mehta, C. R., Patel, N. R., & Gray, R. (1985). *Computing an exact
     confidence interval for the common odds ratio in several 2× 2
     contingency tables.* Journal of the American Statistical
@@ -86,4 +90,4 @@ without his help, this package would not exist.
 
 ## License
 
-This package is free and open source software, licensed under GPL.
+This package is free and open source, licensed under GPL.

@@ -276,7 +276,9 @@ n      <- 250
 alpha  <- 0.01
 
 d_ind <- lr_ind_dist(n, alpha)
-d_cc  <- lr_cc_dist(n, alpha)
+d_cc <- lr_cc_dist(n, alpha)
+d_cc$LR   <- d_cc$LR_cc    
+d_cc$prob <- d_cc$prob_cc
 
 oldpar <- par(mfrow = c(1, 2), mar = c(4, 4, 2, 1)) 
 
@@ -423,9 +425,12 @@ tbl$crit_ind <- mapply(function(n, a, g)
   q_lr(lr_ind_dist(n, a, prune_threshold = 1e-15), g),
   tbl$n, tbl$alpha, tbl$gamma, SIMPLIFY = TRUE)
 
-tbl$crit_cc <- mapply(function(n, a, g)
-  q_lr(lr_cc_dist(n, a, prune_threshold = 1e-15), g),
-  tbl$n, tbl$alpha, tbl$gamma, SIMPLIFY = TRUE)
+tbl$crit_cc <- mapply(function(n, a, g) {
+  d <- lr_cc_dist(n, a, prune_threshold = 1e-15)
+  d$LR   <- d$LR_cc      
+  d$prob <- d$prob_cc   
+  q_lr(d, g)
+}, tbl$n, tbl$alpha, tbl$gamma, SIMPLIFY = TRUE)
 
 print(tbl, digits = 6)
 ```

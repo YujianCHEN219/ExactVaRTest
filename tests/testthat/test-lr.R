@@ -20,9 +20,14 @@ strip_tiny <- function(res, prob_tol = 1e-12) {
   res
 }
 
+## helper to extract CC part from lr_cc_dist() result -----------------
+get_cc <- function(obj) {
+  list(LR = obj$LR_cc, prob = obj$prob_cc)
+}
+
 ## tolerance settings
-TOL      <- 1e-8      # numeric comparison
-PROB_TOL <- 1e-12     # drop negligible probability
+TOL      <- 1e-8
+PROB_TOL <- 1e-12
 
 check_lr_dist <- function(gen_cpp, gen_R,
                           n_vec  = c(5, 10),
@@ -69,8 +74,11 @@ test_that("lr_cc_dist – C++ and R engines numerically identical", {
   n     <- 40
   alpha <- 0.05
   
-  res_cpp <- strip_tiny(collapse_close(lr_cc_dist(n, alpha)), PROB_TOL)
-  res_R   <- strip_tiny(collapse_close(fb_lrcc_R (n, alpha)), PROB_TOL)
+  res_cpp_raw <- lr_cc_dist(n, alpha)
+  res_R_raw   <- fb_lrcc_R (n, alpha)
+  
+  res_cpp <- strip_tiny(collapse_close(get_cc(res_cpp_raw)), PROB_TOL)
+  res_R   <- strip_tiny(collapse_close(get_cc(res_R_raw)),   PROB_TOL)
   
   expect_equal(cumsum(res_cpp$prob), cumsum(res_R$prob), tolerance = TOL)
   expect_true(all(is.finite(res_cpp$prob)))
@@ -79,14 +87,16 @@ test_that("lr_cc_dist – C++ and R engines numerically identical", {
 })
 
 ## ------------------------------------------------------------------
-## Lightweight finite-sample sanity checks
+## Lightweight finite‑sample sanity checks
 ## ------------------------------------------------------------------
-test_that("lr_ind_dist / lr_cc_dist give valid finite-sample distributions", {
+test_that("lr_ind_dist / lr_cc_dist give valid finite‑sample distributions", {
   skip_on_cran()
   skip_if_not_installed("ExactVaRTest")
   
   check_lr_dist(lr_ind_dist, fb_lrind_R, n_vec = c(5, 10),
                 alpha = 0.05, tol = TOL)
-  check_lr_dist(lr_cc_dist,  fb_lrcc_R,  n_vec = c(5, 10),
-                alpha = 0.05, tol = TOL)
+  
+  check_lr_dist(function(n, a) get_cc(lr_cc_dist(n, a)),
+                function(n, a) get_cc(fb_lrcc_R(n, a)),
+                n_vec = c(5, 10), alpha = 0.05, tol = TOL)
 })

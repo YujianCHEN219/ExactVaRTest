@@ -1,25 +1,23 @@
 # -----------------------------------------------------------------------
-#  Wrappers that auto-select the fastest available engine
+#  Wrappers that auto‑select the fastest available engine
 # -----------------------------------------------------------------------
 
-#' Exact LR_ind distribution (auto-select engine)
+#' @importFrom stats dbinom
+
+#  Numeric constant used by lr_*_stat()
+EPS_ <- 1e-15
+
+#' Exact LR_ind distribution (auto‑select engine)
 #'
-#' Returns the finite-sample distribution of Christoffersen’s independence
+#' Returns the finite‑sample distribution of Christoffersen’s independence
 #' statistic \eqn{LR_{\mathrm{ind}}}.
 #'
-#' @param n Integer sample size (\eqn{n \ge 1}).
-#' @param alpha Exception probability \eqn{\alpha \in (0,1)}.
+#' @inheritParams lr_uc_dist
 #' @param prune_threshold Probability below which states are pruned by the
-#'   dynamic-programming recursion.
-#'
-#' @return A data frame with two columns  
-#'   \describe{  
-#'     \item{LR}{unique LR values (ascending)}  
-#'     \item{prob}{exact probabilities (sum to 1)}  
-#'   }
+#'   dynamic‑programming recursion.
+#' @return A list with elements \code{LR} and \code{prob}.
 #'
 #' @examples
-#' ## exact LR_ind distribution for n = 8, alpha = 0.05
 #' lr_ind_dist(8, 0.05)
 #' @export
 lr_ind_dist <- function(n, alpha = 0.05, prune_threshold = 1e-15) {
@@ -33,17 +31,18 @@ lr_ind_dist <- function(n, alpha = 0.05, prune_threshold = 1e-15) {
   }
 }
 
-#' Exact LR_cc distribution (auto-select engine)
+#' Exact LR_cc (and LR_uc) distribution (auto‑select engine)
 #'
-#' Returns the finite-sample distribution of Christoffersen’s
-#' conditional-coverage statistic \eqn{LR_{\mathrm{cc}}}.
+#' Returns the finite‑sample distribution of Christoffersen’s conditional‑coverage
+#' statistic \eqn{LR_{\mathrm{cc}}}.  The returned list also includes the matching
+#' unconditional‑coverage distribution \eqn{LR_{\mathrm{uc}}}, produced by the same
+#' dynamic‑programming run.
 #'
 #' @inheritParams lr_ind_dist
-#'
-#' @return A data frame with columns \code{LR} and \code{prob}.
+#' @return A list with elements \code{LR_cc}, \code{prob_cc}, \code{LR_uc},
+#'   \code{prob_uc}.
 #'
 #' @examples
-#' ## exact LR_cc distribution for n = 8, alpha = 0.05
 #' lr_cc_dist(8, 0.05)
 #' @export
 lr_cc_dist <- function(n, alpha = 0.05, prune_threshold = 1e-15) {
@@ -57,23 +56,34 @@ lr_cc_dist <- function(n, alpha = 0.05, prune_threshold = 1e-15) {
   }
 }
 
-# -----------------------------------------------------------------------
-#  Low-level helpers: LR statistics (pure R)
-# -----------------------------------------------------------------------
+#' Exact LR_uc distribution (closed‑form binomial)
+#'
+#' @param n Integer sample size (\eqn{n \ge 1}).
+#' @param alpha Exception probability \eqn{\alpha \in (0,1)}.
+#' @return A list with elements \code{LR} and \code{prob}.
+#'
+#' @examples
+#' lr_uc_dist(8, 0.01)
+#' @export
+lr_uc_dist <- function(n, alpha = 0.05) {
+  c1   <- 0:n
+  prob <- dbinom(c1, n, alpha)
+  p_   <- max(min(alpha, 1 - EPS), EPS)
+  phat <- pmax(pmin(c1 / n, 1 - EPS), EPS)
+  LR   <- -2 * ( c1 * log(p_) + (n - c1) * log(1 - p_) -
+                   c1 * log(phat) - (n - c1) * log(1 - phat) )
+  list(LR = LR, prob = prob)
+}
 
-EPS_ <- 1e-15                       # local safe-log constant
+# -----------------------------------------------------------------------
+#  Low‑level helpers: LR statistics (pure R)
+# -----------------------------------------------------------------------
 
 #' Christoffersen LR_ind statistic
 #'
 #' @param x     0/1 exception series.
 #' @param alpha Exception probability.
-#'
 #' @return Numeric LR_ind statistic.
-#'
-#' @examples
-#' set.seed(1)
-#' x <- rbinom(50, 1, 0.05)
-#' lr_ind_stat(x, 0.05)
 #' @export
 lr_ind_stat <- function(x, alpha = 0.05) {
   n <- length(x)
@@ -88,7 +98,7 @@ lr_ind_stat <- function(x, alpha = 0.05) {
   T0   <- T00 + T10
   T1   <- T01 + T11
   pHat <- if (n > 1) T1 / (n - 1) else 0
-  num  <- T0 * log(pmax(1 - pHat, EPS_)) + T1 * log(pmax(pHat,  EPS_))
+  num  <- T0 * log(pmax(1 - pHat, EPS_)) + T1 * log(pmax(pHat, EPS_))
   pi01 <- if ((T00 + T01) > 0) T01 / (T00 + T01) else 1
   pi11 <- if ((T10 + T11) > 0) T11 / (T10 + T11) else 1
   den  <- T00 * log(pmax(1 - pi01, EPS_)) + T01 * log(pmax(pi01, EPS_)) +
@@ -98,48 +108,54 @@ lr_ind_stat <- function(x, alpha = 0.05) {
 
 #' Christoffersen LR_cc statistic
 #'
-#' Computes \eqn{LR_{\mathrm{cc}} = LR_{\mathrm{uc}} + LR_{\mathrm{ind}}}.
-#'
 #' @inheritParams lr_ind_stat
-#'
 #' @return Numeric LR_cc statistic.
-#'
-#' @examples
-#' set.seed(1)
-#' x <- rbinom(50, 1, 0.05)
-#' lr_cc_stat(x, 0.05)
 #' @export
 lr_cc_stat <- function(x, alpha = 0.05) {
   n  <- length(x)
   c1 <- sum(x)
-  
-  ## LR_uc
   p_   <- max(min(alpha, 1 - EPS_), EPS_)
   phat <- if (c1 == 0) 0 else if (c1 == n) 1 else c1 / n
   ph_  <- max(min(phat, 1 - EPS_), EPS_)
-  
-  lr_uc <- -2 * ( c1 * log(p_)      + (n - c1) * log(1 - p_) -
-                    c1 * log(ph_)     - (n - c1) * log(1 - ph_) )
-  
+  lr_uc <- -2 * ( c1 * log(p_) + (n - c1) * log(1 - p_) -
+                    c1 * log(ph_) - (n - c1) * log(1 - ph_) )
   lr_uc + lr_ind_stat(x, alpha)
+}
+
+lr_uc_stat <- function(x, alpha = 0.05) {
+  n  <- length(x)
+  c1 <- sum(x)
+  p_   <- max(min(alpha, 1 - EPS_), EPS_)
+  phat <- if (c1 == 0) 0 else if (c1 == n) 1 else c1 / n
+  ph_  <- max(min(phat, 1 - EPS_), EPS_)
+  -2 * ( c1 * log(p_) + (n - c1) * log(1 - p_) -
+           c1 * log(ph_) - (n - c1) * log(1 - ph_) )
 }
 
 # -----------------------------------------------------------------------
 #  Convenience helpers: exact p-values
 # -----------------------------------------------------------------------
 
+#' Exact p-value for LR_uc
+#'
+#' @param lr_obs Observed LR_uc statistic.
+#' @param n      Sample size.
+#' @param alpha  Exception probability.
+#' @return Numeric p-value.
+#' @export
+pval_lr_uc <- function(lr_obs, n, alpha = 0.05) {
+  dist <- lr_uc_dist(n, alpha)
+  if (!length(dist$LR)) return(NA_real_)
+  sum(dist$prob[dist$LR >= lr_obs])
+}
+
 #' Exact p-value for LR_ind
 #'
-#' @param lr_obs Observed \eqn{LR_{\mathrm{ind}}} value.
-#' @inheritParams lr_ind_dist
-#'
+#' @param lr_obs           Observed LR_ind statistic.
+#' @param n                Sample size.
+#' @param alpha            Exception probability.
+#' @param prune_threshold  State-pruning threshold for DP engine.
 #' @return Numeric p-value.
-#'
-#' @examples
-#' set.seed(1)
-#' x  <- rbinom(250, 1, 0.05)
-#' lr <- lr_ind_stat(x, 0.05)
-#' pval_lr_ind(lr, length(x), 0.05)
 #' @export
 pval_lr_ind <- function(lr_obs, n, alpha = 0.05, prune_threshold = 1e-15) {
   dist <- lr_ind_dist(n, alpha, prune_threshold)
@@ -149,51 +165,81 @@ pval_lr_ind <- function(lr_obs, n, alpha = 0.05, prune_threshold = 1e-15) {
 
 #' Exact p-value for LR_cc
 #'
-#' @param lr_obs Observed \eqn{LR_{\mathrm{cc}}} value.
-#' @inheritParams lr_ind_dist
-#'
+#' @param lr_obs           Observed LR_cc statistic.
+#' @param n                Sample size.
+#' @param alpha            Exception probability.
+#' @param prune_threshold  State-pruning threshold for DP engine.
 #' @return Numeric p-value.
-#'
-#' @examples
-#' set.seed(1)
-#' x  <- rbinom(250, 1, 0.05)
-#' lr <- lr_cc_stat(x, 0.05)
-#' pval_lr_cc(lr, length(x), 0.05)
 #' @export
 pval_lr_cc <- function(lr_obs, n, alpha = 0.05, prune_threshold = 1e-15) {
   dist <- lr_cc_dist(n, alpha, prune_threshold)
-  if (!length(dist$LR)) return(NA_real_)
-  sum(dist$prob[dist$LR >= lr_obs])
+  if (!length(dist$LR_cc)) return(NA_real_)
+  sum(dist$prob_cc[dist$LR_cc >= lr_obs])
 }
 
+
 # -----------------------------------------------------------------------
-#  One-shot back-test helper
+#  Print method for back‑test results
 # -----------------------------------------------------------------------
 
-#' Exact finite-sample back-test for a VaR exception series
+#' Print method for ExactVaRBacktest
 #'
-#' Computes the LR statistic, its exact finite-sample p-value and a
-#' reject/accept decision **in one call**.  
-#' The returned object has class `"ExactVaRBacktest"` with a
-#' tailor-made `print()` method.
+#' @param x      An \code{ExactVaRBacktest} object.
+#' @param digits Number of digits to print.
+#' @param ...    Unused.
+#' @method print ExactVaRBacktest
+#' @export
+print.ExactVaRBacktest <- function(x,
+                                   digits = max(3L, getOption("digits") - 3L),
+                                   ...) {
+  digits <- max(1L, as.integer(digits))
+  test_name <- switch(
+    x$type,
+    uc  = "Unconditional coverage (LR_uc)",        
+    ind = "Independence (LR_ind)",
+    cc  = "Conditional coverage (LR_cc)"        
+  )
+  
+  stat_fmt <- formatC(x$stat, format = "f", digits = digits)
+  pval_fmt <- formatC(x$pval, format = "f", digits = digits)
+  lvl_fmt  <- formatC(x$sig * 100, format = "f", digits = 2)
+  decision <- if (x$reject)
+    paste0("REJECT null at ", lvl_fmt, "% level")
+  else
+    paste0("fail to reject at ", lvl_fmt, "% level")
+  
+  cat("Exact finite-sample back-test\n",
+      "--------------------------------\n",
+      sprintf("%-15s: %s\n",  "Test",           test_name),
+      sprintf("%-15s: %d\n",  "Sample size",    x$n),
+      sprintf("%-15s: %.4f\n","Model alpha",    x$alpha),
+      sprintf("%-15s: %.4f\n","Signif. level",  x$sig),
+      sprintf("%-15s: %s\n",  "LR statistic",   stat_fmt),
+      sprintf("%-15s: %s\n",  "Exact p-value",  pval_fmt),
+      sprintf("%-15s: %s\n",  "Decision",       decision),
+      sep = "")
+  invisible(x)
+}
+# -----------------------------------------------------------------------
+#  Single‑test back‑test helper
+# -----------------------------------------------------------------------
+
+#' Exact finite‑sample back‑test for a VaR exception series
 #'
-#' @param x 0/1 exception series.
-#' @param alpha Exception probability used by the VaR model.
-#' @param type `"ind"` (independence) or `"cc"` (conditional coverage).
-#'   Partial matching allowed.
-#' @param sig Significance level for the decision rule. Default `0.05`.
-#' @param prune_threshold Passed to the dynamic-programming engine.
-#'
-#' @return An object of class `"ExactVaRBacktest"` (a named list).
+#' @inheritParams lr_ind_stat
+#' @param type `"uc"`, `"ind"` or `"cc"`.
+#' @param sig  Significance level (default `0.05`).
+#' @param prune_threshold Passed to the dynamic‑programming engine.
+#' @return An object of class `"ExactVaRBacktest"`.
 #'
 #' @examples
-#' set.seed(42)
-#' x <- rbinom(300, 1, 0.05)
-#' backtest_lr(x, alpha = 0.05, type = "cc")
+#' set.seed(123)
+#' x <- rbinom(250, 1, 0.01)
+#' backtest_lr(x, alpha = 0.01, type = "uc")
 #' @export
 backtest_lr <- function(x,
                         alpha = 0.05,
-                        type  = c("ind", "cc"),
+                        type  = c("uc", "ind", "cc"),
                         sig   = 0.05,
                         prune_threshold = 1e-15) {
   
@@ -201,7 +247,10 @@ backtest_lr <- function(x,
   n    <- length(x)
   if (n < 1) stop("Series 'x' must have positive length.")
   
-  if (type == "ind") {
+  if (type == "uc") {
+    stat <- lr_uc_stat(x, alpha)
+    pval <- pval_lr_uc(stat, n, alpha)
+  } else if (type == "ind") {
     stat <- lr_ind_stat(x, alpha)
     pval <- pval_lr_ind(stat, n, alpha, prune_threshold)
   } else {
@@ -223,40 +272,89 @@ backtest_lr <- function(x,
 }
 
 # -----------------------------------------------------------------------
-# Printer
+#  All in one three‑test back‑tester
+# -----------------------------------------------------------------------
+
+#' Exact UC/IND/CC back‑tests in one call
+#'
+#' @inheritParams lr_ind_stat
+#' @param sig  Significance level (default `0.05`).
+#' @param prune_threshold Passed to the dynamic programming engine.
+#' @return An object of class `"ExactVaRBacktestAll"`.
+#'
+#' @examples
+#' set.seed(1)
+#' x <- rbinom(300, 1, 0.02)
+#' backtest_all(x, alpha = 0.02)
+#' @export
+backtest_all <- function(x,
+                         alpha = 0.05,
+                         sig   = 0.05,
+                         prune_threshold = 1e-15) {
+  
+  n <- length(x)
+  if (n < 1) stop("Series 'x' must have positive length.")
+  
+  dist_cc  <- lr_cc_dist(n, alpha, prune_threshold)
+  dist_ind <- lr_ind_dist(n, alpha, prune_threshold)
+  
+  stat_uc  <- lr_uc_stat(x, alpha)
+  stat_ind <- lr_ind_stat(x, alpha)
+  stat_cc  <- lr_cc_stat(x, alpha)
+  
+  p_uc  <- sum(dist_cc$prob_uc[dist_cc$LR_uc >= stat_uc])
+  p_cc  <- sum(dist_cc$prob_cc[dist_cc$LR_cc >= stat_cc])
+  p_ind <- sum(dist_ind$prob   [dist_ind$LR    >= stat_ind])
+  
+  obj <- list(
+    uc  = list(stat = stat_uc,  pval = p_uc,  reject = p_uc  < sig),
+    ind = list(stat = stat_ind, pval = p_ind, reject = p_ind < sig),
+    cc  = list(stat = stat_cc,  pval = p_cc,  reject = p_cc  < sig),
+    sig   = sig,
+    alpha = alpha,
+    n     = n
+  )
+  class(obj) <- "ExactVaRBacktestAll"
+  obj
+}
+
+# -----------------------------------------------------------------------
+#  Print method for ExactVaRBacktestAll
 # -----------------------------------------------------------------------
 
 #' @export
-print.ExactVaRBacktest <- function(x,
-                                   digits = max(3L, getOption("digits") - 3L),
-                                   ...) {
+print.ExactVaRBacktestAll <- function(x,
+                                      digits = max(3L, getOption("digits") - 3L),
+                                      ...) {
+  digits <- max(1L, as.integer(digits))
   
-  digits <- max(1L, as.integer(digits))          # keep at least 1 digit
-  
-  test_name <- if (x$type == "ind")
-    "Independence (LR_ind)"
-  else
-    "Conditional-coverage (LR_cc)"
-  
-  stat_fmt <- formatC(x$stat, format = "f", digits = digits)
-  pval_fmt <- formatC(x$pval, format = "f", digits = digits)
-  lvl_fmt  <- formatC(x$sig * 100, format = "f", digits = 2)
-  
-  decision <- if (x$reject)
-    paste0("REJECT null at ", lvl_fmt, "% level")
-  else
-    paste0("fail to reject at ", lvl_fmt, "% level")
-  
-  cat("Exact finite-sample back-test\n",
-      "--------------------------------\n",
-      sprintf("%-15s: %s\n",  "Test",           test_name),
-      sprintf("%-15s: %d\n",  "Sample size",    x$n),
-      sprintf("%-15s: %.4f\n","Model alpha",    x$alpha),
-      sprintf("%-15s: %.4f\n","Signif. level",  x$sig),
-      sprintf("%-15s: %s\n",  "LR statistic",   stat_fmt),
-      sprintf("%-15s: %s\n",  "Exact p-value",  pval_fmt),
-      sprintf("%-15s: %s\n",  "Decision",       decision),
+  # header printed once
+  cat("Exact finite sample backtest\n\n",
+      sprintf("%-15s: %d\n",  "Sample size",   x$n),
+      sprintf("%-15s: %.4f\n","Model alpha",   x$alpha),
+      sprintf("%-15s: %.4f\n","Signif. level", x$sig),
       sep = "")
+  
+  print_one <- function(res, title) {
+    stat_fmt <- formatC(res$stat, format = "f", digits = digits)
+    pval_fmt <- formatC(res$pval, format = "f", digits = digits)
+    lvl_fmt  <- formatC(x$sig * 100, format = "f", digits = 2)
+    decision <- if (res$reject)
+      paste0("REJECT null at ", lvl_fmt, "% level")
+    else
+      paste0("fail to reject at ", lvl_fmt, "% level")
+    
+    cat("--------------------------------\n",
+        sprintf("%-15s: %s\n",  "Test",          title),
+        sprintf("%-15s: %s\n",  "LR statistic",  stat_fmt),
+        sprintf("%-15s: %s\n",  "Exact p-value", pval_fmt),
+        sprintf("%-15s: %s\n",  "Decision",      decision),
+        sep = "")
+  }
+  
+  print_one(x$uc,  "Unconditional coverage (LR_uc)")
+  print_one(x$ind, "Independence (LR_ind)")
+  print_one(x$cc,  "Conditional coverage (LR_cc)")
+  
   invisible(x)
 }
-

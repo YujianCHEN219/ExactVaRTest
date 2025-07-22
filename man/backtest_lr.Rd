@@ -2,12 +2,12 @@
 % Please edit documentation in R/wrappers.R
 \name{backtest_lr}
 \alias{backtest_lr}
-\title{Exact finite-sample back-test for a VaR exception series}
+\title{Exact finite‑sample back‑test for a VaR exception series}
 \usage{
 backtest_lr(
   x,
   alpha = 0.05,
-  type = c("ind", "cc"),
+  type = c("uc", "ind", "cc"),
   sig = 0.05,
   prune_threshold = 1e-15
 )
@@ -15,26 +15,22 @@ backtest_lr(
 \arguments{
 \item{x}{0/1 exception series.}
 
-\item{alpha}{Exception probability used by the VaR model.}
+\item{alpha}{Exception probability.}
 
-\item{type}{\code{"ind"} (independence) or \code{"cc"} (conditional coverage).
-Partial matching allowed.}
+\item{type}{\code{"uc"}, \code{"ind"} or \code{"cc"}.}
 
-\item{sig}{Significance level for the decision rule. Default \code{0.05}.}
+\item{sig}{Significance level (default \code{0.05}).}
 
-\item{prune_threshold}{Passed to the dynamic-programming engine.}
+\item{prune_threshold}{Passed to the dynamic‑programming engine.}
 }
 \value{
-An object of class \code{"ExactVaRBacktest"} (a named list).
+An object of class \code{"ExactVaRBacktest"}.
 }
 \description{
-Computes the LR statistic, its exact finite-sample p-value and a
-reject/accept decision \strong{in one call}.
-The returned object has class \code{"ExactVaRBacktest"} with a
-tailor-made \code{print()} method.
+Exact finite‑sample back‑test for a VaR exception series
 }
 \examples{
-set.seed(42)
-x <- rbinom(300, 1, 0.05)
-backtest_lr(x, alpha = 0.05, type = "cc")
+set.seed(123)
+x <- rbinom(250, 1, 0.01)
+backtest_lr(x, alpha = 0.01, type = "uc")
 }
