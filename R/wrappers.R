@@ -5,7 +5,7 @@
 #' @importFrom stats dbinom
 
 #  Numeric constant used by lr_*_stat()
-EPS_ <- 1e-15
+EPS <- 1e-15
 
 #' Exact LR_ind distribution (auto‑select engine)
 #'
@@ -98,11 +98,11 @@ lr_ind_stat <- function(x, alpha = 0.05) {
   T0   <- T00 + T10
   T1   <- T01 + T11
   pHat <- if (n > 1) T1 / (n - 1) else 0
-  num  <- T0 * log(pmax(1 - pHat, EPS_)) + T1 * log(pmax(pHat, EPS_))
+  num  <- T0 * log(pmax(1 - pHat, EPS)) + T1 * log(pmax(pHat, EPS))
   pi01 <- if ((T00 + T01) > 0) T01 / (T00 + T01) else 1
   pi11 <- if ((T10 + T11) > 0) T11 / (T10 + T11) else 1
-  den  <- T00 * log(pmax(1 - pi01, EPS_)) + T01 * log(pmax(pi01, EPS_)) +
-    T10 * log(pmax(1 - pi11, EPS_)) + T11 * log(pmax(pi11, EPS_))
+  den  <- T00 * log(pmax(1 - pi01, EPS)) + T01 * log(pmax(pi01, EPS)) +
+    T10 * log(pmax(1 - pi11, EPS)) + T11 * log(pmax(pi11, EPS))
   -2 * (num - den)
 }
 
@@ -114,20 +114,27 @@ lr_ind_stat <- function(x, alpha = 0.05) {
 lr_cc_stat <- function(x, alpha = 0.05) {
   n  <- length(x)
   c1 <- sum(x)
-  p_   <- max(min(alpha, 1 - EPS_), EPS_)
+  p_   <- max(min(alpha, 1 - EPS), EPS)
   phat <- if (c1 == 0) 0 else if (c1 == n) 1 else c1 / n
-  ph_  <- max(min(phat, 1 - EPS_), EPS_)
+  ph_  <- max(min(phat, 1 - EPS), EPS)
   lr_uc <- -2 * ( c1 * log(p_) + (n - c1) * log(1 - p_) -
                     c1 * log(ph_) - (n - c1) * log(1 - ph_) )
   lr_uc + lr_ind_stat(x, alpha)
 }
 
+
+#' Christoffersen LR_uc statistic
+#' 
+#' @param x     0/1 exception series.
+#' @param alpha Exception probability.
+#' @return Numeric LR_uc statistic.
+#' @export              
 lr_uc_stat <- function(x, alpha = 0.05) {
   n  <- length(x)
   c1 <- sum(x)
-  p_   <- max(min(alpha, 1 - EPS_), EPS_)
+  p_   <- max(min(alpha, 1 - EPS), EPS)
   phat <- if (c1 == 0) 0 else if (c1 == n) 1 else c1 / n
-  ph_  <- max(min(phat, 1 - EPS_), EPS_)
+  ph_  <- max(min(phat, 1 - EPS), EPS)
   -2 * ( c1 * log(p_) + (n - c1) * log(1 - p_) -
            c1 * log(ph_) - (n - c1) * log(1 - ph_) )
 }

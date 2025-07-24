@@ -532,31 +532,31 @@ exact finite-sample distribution for a range of <span class="math inline">\(n\)<
 <td align="right">100</td>
 <td align="right">0.014</td>
 <td align="right">0.026</td>
-<td align="right">0.044</td>
+<td align="right">0.045</td>
 </tr>
 <tr class="odd">
 <td align="right">250</td>
-<td align="right">0.057</td>
-<td align="right">0.112</td>
-<td align="right">0.215</td>
+<td align="right">0.055</td>
+<td align="right">0.111</td>
+<td align="right">0.224</td>
 </tr>
 <tr class="even">
 <td align="right">500</td>
-<td align="right">0.153</td>
-<td align="right">0.348</td>
-<td align="right">0.731</td>
+<td align="right">0.157</td>
+<td align="right">0.350</td>
+<td align="right">0.737</td>
 </tr>
 <tr class="odd">
 <td align="right">750</td>
 <td align="right">0.290</td>
-<td align="right">0.679</td>
-<td align="right">1.534</td>
+<td align="right">0.690</td>
+<td align="right">1.525</td>
 </tr>
 <tr class="even">
 <td align="right">1000</td>
-<td align="right">0.457</td>
-<td align="right">1.131</td>
-<td align="right">2.578</td>
+<td align="right">0.458</td>
+<td align="right">1.129</td>
+<td align="right">2.575</td>
 </tr>
 </tbody>
 </table>
@@ -587,32 +587,32 @@ exact finite-sample distribution for a range of <span class="math inline">\(n\)<
 <tr class="even">
 <td align="right">100</td>
 <td align="right">0.014</td>
-<td align="right">0.025</td>
+<td align="right">0.026</td>
 <td align="right">0.043</td>
 </tr>
 <tr class="odd">
 <td align="right">250</td>
 <td align="right">0.052</td>
-<td align="right">0.109</td>
-<td align="right">0.207</td>
+<td align="right">0.108</td>
+<td align="right">0.208</td>
 </tr>
 <tr class="even">
 <td align="right">500</td>
 <td align="right">0.147</td>
-<td align="right">0.341</td>
-<td align="right">0.716</td>
+<td align="right">0.335</td>
+<td align="right">0.743</td>
 </tr>
 <tr class="odd">
 <td align="right">750</td>
-<td align="right">0.277</td>
-<td align="right">0.656</td>
-<td align="right">1.495</td>
+<td align="right">0.275</td>
+<td align="right">0.661</td>
+<td align="right">1.519</td>
 </tr>
 <tr class="even">
 <td align="right">1000</td>
-<td align="right">0.433</td>
+<td align="right">0.432</td>
 <td align="right">1.057</td>
-<td align="right">2.652</td>
+<td align="right">2.846</td>
 </tr>
 </tbody>
 </table>
@@ -660,8 +660,8 @@ exact finite-sample distribution for a range of <span class="math inline">\(n\)<
 <span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 2</span></span>
 <span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a><span class="co">#&gt;   expression   median</span></span>
 <span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a><span class="co">#&gt;   &lt;bch:expr&gt; &lt;bch:tm&gt;</span></span>
-<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co">#&gt; 1 LR_ind         2.1s</span></span>
-<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="co">#&gt; 2 LR_cc         1.83s</span></span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a><span class="co">#&gt; 1 LR_ind        2.29s</span></span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a><span class="co">#&gt; 2 LR_cc         1.94s</span></span>
 <span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a></span>
 <span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a>res_ind <span class="ot">&lt;-</span> <span class="fu">backtest_lr</span>(x, alpha, <span class="st">&quot;ind&quot;</span>)</span>
 <span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a>res_cc  <span class="ot">&lt;-</span> <span class="fu">backtest_lr</span>(x, alpha, <span class="st">&quot;cc&quot;</span>)</span>
@@ -908,6 +908,57 @@ null when <span class="math inline">\(n\)</span> = 250 and <span class="math inl
 <span id="cb9-73"><a href="#cb9-73" tabindex="-1"></a><span class="co">#&gt; 46  500 0.050  0.99 5.1611861 8.61684</span></span>
 <span id="cb9-74"><a href="#cb9-74" tabindex="-1"></a><span class="co">#&gt; 47  750 0.050  0.99 5.7567648 8.82765</span></span>
 <span id="cb9-75"><a href="#cb9-75" tabindex="-1"></a><span class="co">#&gt; 48 1000 0.050  0.99 6.4125291 9.03016</span></span></code></pre></div>
+</div>
+<div id="backtesting-covar-with-random-p-binomialp-α" class="section level1">
+<h1>Backtesting CoVaR with random P′∼ Binomial(P, α′)</h1>
+<p><span class="math inline">\(p = \sum_{k=0}^{P} \Pr\!\bigl(P&#39; =
+k\bigr)\,\Pr\!\bigl(LR_{\text{uc/ind}} \ge \text{obs}\mid P&#39; =
+k\bigr)\)</span></p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a><span class="fu">library</span>(ExactVaRTest)</span>
+<span id="cb10-2"><a href="#cb10-2" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb10-4"><a href="#cb10-4" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" tabindex="-1"></a>P            <span class="ot">&lt;-</span> <span class="dv">250</span></span>
+<span id="cb10-6"><a href="#cb10-6" tabindex="-1"></a>alpha        <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb10-7"><a href="#cb10-7" tabindex="-1"></a>alpha_prime  <span class="ot">&lt;-</span> <span class="fl">0.10</span></span>
+<span id="cb10-8"><a href="#cb10-8" tabindex="-1"></a></span>
+<span id="cb10-9"><a href="#cb10-9" tabindex="-1"></a>inst_flag <span class="ot">&lt;-</span> <span class="fu">rbinom</span>(P, <span class="dv">1</span>, alpha_prime)</span>
+<span id="cb10-10"><a href="#cb10-10" tabindex="-1"></a>sys_flag  <span class="ot">&lt;-</span> <span class="cf">if</span> (<span class="fu">sum</span>(inst_flag)) <span class="fu">rbinom</span>(<span class="fu">sum</span>(inst_flag), <span class="dv">1</span>, alpha) <span class="cf">else</span> <span class="fu">integer</span>(<span class="dv">0</span>)</span>
+<span id="cb10-11"><a href="#cb10-11" tabindex="-1"></a></span>
+<span id="cb10-12"><a href="#cb10-12" tabindex="-1"></a>lr_uc  <span class="ot">&lt;-</span> <span class="fu">lr_uc_stat</span>(sys_flag,  alpha)</span>
+<span id="cb10-13"><a href="#cb10-13" tabindex="-1"></a>lr_ind <span class="ot">&lt;-</span> <span class="fu">lr_ind_stat</span>(sys_flag, alpha)</span>
+<span id="cb10-14"><a href="#cb10-14" tabindex="-1"></a></span>
+<span id="cb10-15"><a href="#cb10-15" tabindex="-1"></a>mix_tail <span class="ot">&lt;-</span> <span class="cf">function</span>(lr_obs, P, alpha, alpha_prime,</span>
+<span id="cb10-16"><a href="#cb10-16" tabindex="-1"></a>                     <span class="at">type =</span> <span class="fu">c</span>(<span class="st">&quot;uc&quot;</span>, <span class="st">&quot;ind&quot;</span>), <span class="at">prune =</span> <span class="fl">1e-15</span>) {</span>
+<span id="cb10-17"><a href="#cb10-17" tabindex="-1"></a>  type <span class="ot">&lt;-</span> <span class="fu">match.arg</span>(type)</span>
+<span id="cb10-18"><a href="#cb10-18" tabindex="-1"></a>  w    <span class="ot">&lt;-</span> <span class="fu">dbinom</span>(<span class="dv">0</span><span class="sc">:</span>P, P, alpha_prime)</span>
+<span id="cb10-19"><a href="#cb10-19" tabindex="-1"></a></span>
+<span id="cb10-20"><a href="#cb10-20" tabindex="-1"></a>  tail_prob <span class="ot">&lt;-</span> <span class="cf">function</span>(k) {</span>
+<span id="cb10-21"><a href="#cb10-21" tabindex="-1"></a>    <span class="cf">if</span> (type <span class="sc">==</span> <span class="st">&quot;uc&quot;</span>) {</span>
+<span id="cb10-22"><a href="#cb10-22" tabindex="-1"></a>      <span class="cf">if</span> (<span class="sc">!</span>k) <span class="fu">return</span>(<span class="fu">as.numeric</span>(lr_obs <span class="sc">&lt;=</span> <span class="dv">0</span>))</span>
+<span id="cb10-23"><a href="#cb10-23" tabindex="-1"></a>      d <span class="ot">&lt;-</span> <span class="fu">lr_uc_dist</span>(k, alpha)</span>
+<span id="cb10-24"><a href="#cb10-24" tabindex="-1"></a>      <span class="fu">sum</span>(d<span class="sc">$</span>prob[d<span class="sc">$</span>LR <span class="sc">&gt;=</span> lr_obs])</span>
+<span id="cb10-25"><a href="#cb10-25" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb10-26"><a href="#cb10-26" tabindex="-1"></a>      <span class="cf">if</span> (k <span class="sc">&lt;</span> <span class="dv">2</span>) <span class="fu">return</span>(<span class="fu">as.numeric</span>(lr_obs <span class="sc">&lt;=</span> <span class="dv">0</span>))</span>
+<span id="cb10-27"><a href="#cb10-27" tabindex="-1"></a>      d <span class="ot">&lt;-</span> <span class="fu">lr_ind_dist</span>(k, alpha, prune)</span>
+<span id="cb10-28"><a href="#cb10-28" tabindex="-1"></a>      <span class="fu">sum</span>(d<span class="sc">$</span>prob[d<span class="sc">$</span>LR <span class="sc">&gt;=</span> lr_obs])</span>
+<span id="cb10-29"><a href="#cb10-29" tabindex="-1"></a>    }</span>
+<span id="cb10-30"><a href="#cb10-30" tabindex="-1"></a>  }</span>
+<span id="cb10-31"><a href="#cb10-31" tabindex="-1"></a></span>
+<span id="cb10-32"><a href="#cb10-32" tabindex="-1"></a>  <span class="fu">sum</span>(<span class="fu">vapply</span>(<span class="dv">0</span><span class="sc">:</span>P, tail_prob, <span class="fu">numeric</span>(<span class="dv">1</span>)) <span class="sc">*</span> w)</span>
+<span id="cb10-33"><a href="#cb10-33" tabindex="-1"></a>}</span>
+<span id="cb10-34"><a href="#cb10-34" tabindex="-1"></a></span>
+<span id="cb10-35"><a href="#cb10-35" tabindex="-1"></a>p_uc  <span class="ot">&lt;-</span> <span class="fu">mix_tail</span>(lr_uc,  P, alpha, alpha_prime, <span class="st">&quot;uc&quot;</span>)</span>
+<span id="cb10-36"><a href="#cb10-36" tabindex="-1"></a>p_ind <span class="ot">&lt;-</span> <span class="fu">mix_tail</span>(lr_ind, P, alpha, alpha_prime, <span class="st">&quot;ind&quot;</span>)</span>
+<span id="cb10-37"><a href="#cb10-37" tabindex="-1"></a></span>
+<span id="cb10-38"><a href="#cb10-38" tabindex="-1"></a><span class="fu">data.frame</span>(</span>
+<span id="cb10-39"><a href="#cb10-39" tabindex="-1"></a>  <span class="at">test =</span> <span class="fu">c</span>(<span class="st">&quot;UC&quot;</span>, <span class="st">&quot;IND&quot;</span>),</span>
+<span id="cb10-40"><a href="#cb10-40" tabindex="-1"></a>  <span class="at">stat =</span> <span class="fu">c</span>(lr_uc, lr_ind),</span>
+<span id="cb10-41"><a href="#cb10-41" tabindex="-1"></a>  <span class="at">p    =</span> <span class="fu">c</span>(p_uc, p_ind)</span>
+<span id="cb10-42"><a href="#cb10-42" tabindex="-1"></a>)</span>
+<span id="cb10-43"><a href="#cb10-43" tabindex="-1"></a><span class="co">#&gt;   test       stat         p</span></span>
+<span id="cb10-44"><a href="#cb10-44" tabindex="-1"></a><span class="co">#&gt; 1   UC 0.03710616 0.8595301</span></span>
+<span id="cb10-45"><a href="#cb10-45" tabindex="-1"></a><span class="co">#&gt; 2  IND 0.09094042 0.5100388</span></span></code></pre></div>
 <pre><code>#&gt; R version 4.2.3 (2023-03-15)
 #&gt; Platform: x86_64-apple-darwin17.0 (64-bit)
 #&gt; Running under: macOS Catalina 10.15.1

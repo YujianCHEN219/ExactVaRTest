@@ -56,15 +56,22 @@ print(bt)
 
 * Minimal dependencies (`Rcpp`, `stats`); works on macOS, Linux, and Windows.
 
-## References
+## Extensions
+
+Freely extends to CoVaR backtesting: pass the institution’s hit sequence on system‑VaR‑breach days into `backtest_lr()` for exact UC/IND p‑values. 
+* for short windows or extreme tails, you may treat the systemic‑breach count as random and apply the mixture test to maintain correct size. (see one example in vignettes and [Francq & Zakoïan 2025]).
+
+## Suggested reading 
 
 1. Christoffersen, P. F. (1998). *Evaluating interval forecasts.* International economic review, 841-862.
 
 2. Mehta, C. R., Patel, N. R., & Gray, R. (1985). *Computing an exact confidence interval for the common odds ratio in several 2× 2 contingency tables.* Journal of the American Statistical Association, 80(392), 969-973.
 
+3. Francq, C., & Zakoïan, J. M. (2025). Inference on dynamic systemic risk measures. Journal of Econometrics, 247, 105936.
+
 ## Acknowledgements
 
-I greatly appreciate Christian Francq, Christophe Hurlin, and Jean-Michel Zakoian's guidance and support.
+I greatly appreciate Christian Francq, Christophe Hurlin, and Jean-Michel Zakoïan's guidance and support.
 
 In particular, Christian Francq generously shared the initial idea; without his help, this package would not exist.
 

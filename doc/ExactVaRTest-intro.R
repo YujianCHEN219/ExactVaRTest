@@ -258,6 +258,50 @@ tbl$crit_cc <- mapply(function(n, a, g) {
 
 print(tbl, digits = 6)
 
+## ----message=FALSE, warning=FALSE---------------------------------------------
+library(ExactVaRTest)
+
+set.seed(123)
+
+P            <- 250
+alpha        <- 0.05
+alpha_prime  <- 0.10
+
+inst_flag <- rbinom(P, 1, alpha_prime)
+sys_flag  <- if (sum(inst_flag)) rbinom(sum(inst_flag), 1, alpha) else integer(0)
+
+lr_uc  <- lr_uc_stat(sys_flag,  alpha)
+lr_ind <- lr_ind_stat(sys_flag, alpha)
+
+mix_tail <- function(lr_obs, P, alpha, alpha_prime,
+                     type = c("uc", "ind"), prune = 1e-15) {
+  type <- match.arg(type)
+  w    <- dbinom(0:P, P, alpha_prime)
+
+  tail_prob <- function(k) {
+    if (type == "uc") {
+      if (!k) return(as.numeric(lr_obs <= 0))
+      d <- lr_uc_dist(k, alpha)
+      sum(d$prob[d$LR >= lr_obs])
+    } else {
+      if (k < 2) return(as.numeric(lr_obs <= 0))
+      d <- lr_ind_dist(k, alpha, prune)
+      sum(d$prob[d$LR >= lr_obs])
+    }
+  }
+
+  sum(vapply(0:P, tail_prob, numeric(1)) * w)
+}
+
+p_uc  <- mix_tail(lr_uc,  P, alpha, alpha_prime, "uc")
+p_ind <- mix_tail(lr_ind, P, alpha, alpha_prime, "ind")
+
+data.frame(
+  test = c("UC", "IND"),
+  stat = c(lr_uc, lr_ind),
+  p    = c(p_uc, p_ind)
+)
+
 ## ----session-info, echo=FALSE-------------------------------------------------
 sessionInfo()
 
