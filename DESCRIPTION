@@ -1,7 +1,6 @@
 Package: ExactVaRTest
 Title: Exact Finite-Sample VaR Back-Testing
 Version: 0.1.1
-Date: 2025-07-22
 Authors@R:
     person("Yujian", "Chen",
            email = "yjc4996@gmail.com",
