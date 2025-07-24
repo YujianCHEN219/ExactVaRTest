@@ -58,10 +58,9 @@ print(bt)
 
 ## Extensions
 
-Freely extends to CoVaR backtesting: pass the institution’s hit sequence on system‑VaR‑breach days into `backtest_lr()` for exact UC/IND p‑values. 
-* for short windows or extreme tails, you may treat the systemic‑breach count as random and apply the mixture test to maintain correct size. (see one example in vignettes and [Francq & Zakoïan 2025]).
+Freely extends to *CoVaR backtesting*: pass the institution’s hit sequence on system‑VaR‑breach days into `backtest_lr()` for exact UC/IND p‑values; for short windows or extreme tails, one option is to treat the systemic‑breach count as random and apply the mixture‑tail test to maintain correct size. (see vignettes and [Francq & Zakoïan 2025]).
 
-## Suggested reading 
+## Suggested readings 
 
 1. Christoffersen, P. F. (1998). *Evaluating interval forecasts.* International economic review, 841-862.
 

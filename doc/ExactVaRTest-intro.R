@@ -1,7 +1,11 @@
 ## ----include = FALSE----------------------------------------------------------
+NOT_CRAN <- identical(Sys.getenv("NOT_CRAN"), "true")
+
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment  = "#>",
+  eval     = NOT_CRAN,
+  echo     = TRUE
 )
 
 ## ----setup--------------------------------------------------------------------
