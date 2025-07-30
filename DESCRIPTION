@@ -1,6 +1,6 @@
 Package: ExactVaRTest
 Title: Exact Finite-Sample VaR Back-Testing
-Version: 0.1.1
+Version: 0.1.2
 Language: en-US
 Authors@R:
     person("Yujian", "Chen",
@@ -12,7 +12,7 @@ Description: Provides fast dynamic‑programming algorithms in C++/Rcpp
     and p‑values of Christoffersen's (1998) independence (IND) and
     conditional‑coverage (CC) VaR back‑tests, plus unconditional‑coverage
     (UC) tests via closed‑form binomial enumeration.
-License: GPL (>= 3) + file LICENSE
+License: GPL (>= 3)
 Depends: 
     R (>= 3.5.0)
 Imports:
